@@ -3,7 +3,7 @@
         <v-card width="500px" v-for="toot in sharedState.currentToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
             <v-card-title class="headline">
             <v-img :src="toot.account.avatar" class="avatar ma-2" max-height="2rem" max-width="2rem"/>
-            {{ toot.account.display_name }}
+            <span v-html="toot.account.display_name"/>
             </v-card-title>
             <v-card-subtitle class="overline pl-7">
             {{ toot.created_at | formatDate }}

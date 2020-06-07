@@ -37,16 +37,24 @@ export const store = {
     },
 
     replaceEmoji() {
-        // TODO: Replace emoji in display_name, they are under account object
+        // Replace custom emoji shortcodes with the actual image in the toot contents
         for (let toot of this.state.currentToots) {
             if (toot.emojis.length) {
                 let content = toot.content;
                 for (let emoji of toot.emojis) {
-                    // TODO: Change this to regex so it replaces all occurrences
-                    content = content.replace(`:${emoji.shortcode}:`, `<img class="emoji" src="${emoji.url}" />`)
+                    let re = new RegExp(`:${emoji.shortcode}:`, 'g');
+                    content = content.replace(re, `<img class="emoji" src="${emoji.url}" />`)
                 }
-                // TODO: Just replace the existing content
-                toot.new_content = content;
+                toot.content = content;
+            }
+            // Do the same thing for display name
+            if (toot.account.emojis.length) {
+                let display_name = toot.account.display_name;
+                for (let emoji of toot.account.emojis) {
+                    let re = new RegExp(`:${emoji.shortcode}:`, 'g');
+                    display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`)
+                }
+                toot.account.display_name = display_name;
             }
         }
     },
