@@ -6,12 +6,12 @@ module.exports = {
     config
       .plugin('html')
       .tap((args) => {
-        args[0].title = 'Mastodon Vue-r';
+        args[0].title = 'Mastodon Vuer';
         return args;
       });
   },
   pwa: {
-    name: 'Mastodon Vue-r',
+    name: 'Mastodon Vuer',
     themeColor: '#3F51B5',
     msTileColor: '#000000',
     appleMobileWebAppCapable: 'yes',

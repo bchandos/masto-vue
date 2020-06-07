@@ -5,10 +5,12 @@ export const store = {
         selectedTrend: '',
         navigationDrawer: false,
         currentTrends: [],
+        loading: false,
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 
     async getTagTimeline(tag, limit=15) {
+        this.state.loading = true;
         this.state.currentTag = tag;
         const response = await fetch(`${this.BASE_URL}/timelines/tag/${tag}?limit=${limit}`, {
             method: 'GET',
@@ -16,9 +18,23 @@ export const store = {
         const json_response = await response.json();
         this.state.currentToots = json_response;
         this.replaceEmoji();
+        this.state.loading = false;
+    },
+
+    async updateTagTimeline(limit=15) {
+        this.state.loading = true;
+        let last_id = this.state.currentToots[0].id;
+        const response = await fetch(`${this.BASE_URL}/timelines/tag/${this.state.currentTag}?since_id=${last_id}&limit=${limit}`, {
+            method: 'GET',
+        });
+        const json_response = await response.json();
+        this.state.currentToots.unshift(...json_response);
+        this.replaceEmoji();
+        this.state.loading = false;
     },
 
     async getPublicTimeline(limit=50) {
+        this.state.loading = true;
         this.state.currentTag = '';
         const response = await fetch(`${this.BASE_URL}/timelines/public?limit=${limit}`, {
             method: 'GET',
@@ -26,6 +42,19 @@ export const store = {
         const json_response = await response.json();
         this.state.currentToots = json_response;
         this.replaceEmoji();
+        this.state.loading = false;
+    },
+    
+    async updatePublicTimeline(limit=50) {
+        this.state.loading = true;
+        let last_id = this.state.currentToots[0].id;
+        const response = await fetch(`${this.BASE_URL}/timelines/public?since_id=${last_id}&limit=${limit}`, {
+            method: 'GET',
+        });
+        const json_response = await response.json();
+        this.state.currentToots.unshift(...json_response);
+        this.replaceEmoji();
+        this.state.loading = false;
     },
 
     async getTrends() {
@@ -54,6 +83,7 @@ export const store = {
                     let re = new RegExp(`:${emoji.shortcode}:`, 'g');
                     display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`)
                 }
+                console.log(display_name);
                 toot.account.display_name = display_name;
             }
         }

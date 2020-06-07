@@ -6,9 +6,16 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="sharedState.navigationDrawer = !sharedState.navigationDrawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Mastodon Vue-r</v-toolbar-title>
+      <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
+      <!-- TODO: Add tag search -->
+      <v-progress-linear
+        :active="sharedState.loading"
+        :indeterminate="sharedState.loading"
+        absolute
+        bottom
+      ></v-progress-linear>
     </v-app-bar>
-
+    <!-- TODO: Add toast notification system (copy from budget planner?) -->
     <v-content>
       <v-container
         class="fill-height"
