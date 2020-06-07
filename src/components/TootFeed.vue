@@ -1,6 +1,7 @@
 <template>
+<!-- TODO: Loading animation when that's taking place -->
     <v-col class="shrink">
-        <v-card width="500px" v-for="toot in sharedState.currentToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
+        <v-card width="500px" v-for="toot in englishToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
             <v-card-title class="headline">
             <v-img :src="toot.account.avatar" class="avatar ma-2" max-height="2rem" max-width="2rem"/>
             <span v-html="toot.account.display_name"/>
@@ -22,7 +23,12 @@ export default {
     data: () => ({
       sharedState: store.state,
     }),
-
+    computed: {
+      englishToots: function() {
+        // TODO: Does the API have a language filter???
+        return this.sharedState.currentToots.filter(t => t.language=='en');
+      }
+    },
     filters: {
       formatDate: function(date) {
         return new Date(date).toLocaleString('en');

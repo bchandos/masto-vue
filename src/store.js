@@ -18,7 +18,7 @@ export const store = {
         this.replaceEmoji();
     },
 
-    async getPublicTimeline(limit=15) {
+    async getPublicTimeline(limit=50) {
         this.state.currentTag = '';
         const response = await fetch(`${this.BASE_URL}/timelines/public?limit=${limit}`, {
             method: 'GET',

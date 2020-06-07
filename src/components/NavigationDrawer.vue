@@ -7,6 +7,7 @@
       <v-list dense>
         <v-list-item link>
           <v-list-item-action>
+            <!-- TODO: Add a refresh button -->
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
@@ -27,7 +28,8 @@
               v-for="trend in sharedState.currentTrends" 
               :key="trend.name" 
               :value="trend.name"
-              @click="loadTrends">
+              @click.native="loadTrends"
+              >
                 <v-list-item-action>
                         <v-icon>mdi-pound</v-icon>
                 </v-list-item-action>
@@ -47,7 +49,6 @@ export default {
       sharedState: store.state,
     }),
     methods: {
-        // TODO: Fix timing/sequencing issue here
         loadTrends: function() {
           if (this.sharedState.selectedTrend) {
             store.getTagTimeline(this.sharedState.selectedTrend);

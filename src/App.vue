@@ -18,6 +18,7 @@
           align="center"
           justify="center"
         >
+        <!-- TODO: Move this column left and add another to the right for spotlight -->
           <TootFeed />
         </v-row>
       </v-container>
