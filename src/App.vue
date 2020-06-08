@@ -1,13 +1,22 @@
 <template>
   <v-app id="inspire">
     <NavigationDrawer />
+    <!-- TODO: Move app bar into component -->
     <v-app-bar
       app
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="sharedState.navigationDrawer = !sharedState.navigationDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
-      <!-- TODO: Add tag search -->
+      <!-- TODO: Refine tag search -->
+      <v-toolbar-items>
+        <v-text-field 
+          prepend-inner-icon="mdi-magnify" 
+          class="mt-4 ml-4" 
+          clearable
+          @change="searchForTag"
+          v-model="searchTag" />
+      </v-toolbar-items>
       <v-progress-linear
         :active="sharedState.loading"
         :indeterminate="sharedState.loading"
@@ -49,6 +58,7 @@ import NavigationDrawer from './components/NavigationDrawer.vue';
     },
     props: {
       source: String,
+      searchTag: String,
     },
 
     data: () => ({
@@ -64,7 +74,15 @@ import NavigationDrawer from './components/NavigationDrawer.vue';
       formatDate: function(date) {
         return new Date(date).toLocaleString('en');
       },
-    }
+    },
+    methods: {
+      searchForTag: function() {
+        if (this.searchTag) {
+          store.getTagTimeline(this.searchTag);
+        }
+        this.searchTag = '';
+      }
+    },
   }
 </script>
 <style>

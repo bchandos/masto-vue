@@ -22,6 +22,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider/>
+        <!-- TODO: Saved tags & tag history -->
         <v-list-item-group v-model="sharedState.selectedTrend">
             <v-list-item key="cats-debug" value="cats" @click.native="loadTrends">
               <v-list-item-action>

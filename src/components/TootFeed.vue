@@ -25,7 +25,7 @@ export default {
     computed: {
       englishToots: function() {
         // TODO: Optional bot filter
-        return this.sharedState.currentToots.filter(t => t.language=='en');
+        return this.sharedState.currentToots.filter(t => t.language=='en' && t.sensitive==false);
       }
     },
     filters: {

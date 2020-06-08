@@ -36,6 +36,7 @@ export const store = {
     async getPublicTimeline(limit=50) {
         this.state.loading = true;
         this.state.currentTag = '';
+        this.state.selectedTrend = '';
         const response = await fetch(`${this.BASE_URL}/timelines/public?limit=${limit}`, {
             method: 'GET',
         });
