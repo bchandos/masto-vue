@@ -10,8 +10,10 @@
       <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
       <!-- TODO: Refine tag search -->
       <v-toolbar-items>
+        <!-- Allow only single word lookup. Check API docs for tag length limit -->
         <v-text-field 
-          prepend-inner-icon="mdi-magnify" 
+          append-icon="mdi-magnify" 
+          prepend-inner-icon="mdi-pound"
           class="mt-4 ml-4" 
           clearable
           @change="searchForTag"
@@ -75,6 +77,8 @@ import NavigationDrawer from './components/NavigationDrawer.vue';
         return new Date(date).toLocaleString('en');
       },
     },
+    // TODO: Add polling with frequency settings
+    // https://renatello.com/vue-js-polling-using-setinterval/
     methods: {
       searchForTag: function() {
         if (this.searchTag) {

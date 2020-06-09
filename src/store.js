@@ -6,6 +6,7 @@ export const store = {
         navigationDrawer: false,
         currentTrends: [],
         loading: false,
+        activeFilters: [],
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 
@@ -84,7 +85,6 @@ export const store = {
                     let re = new RegExp(`:${emoji.shortcode}:`, 'g');
                     display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`)
                 }
-                console.log(display_name);
                 toot.account.display_name = display_name;
             }
         }

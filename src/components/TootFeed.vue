@@ -1,4 +1,5 @@
 <template>
+<!-- TODO: Figure out desired auto-scroll behavior (maybe to top when clicking menu, no change during regular updates) -->
     <v-col class="shrink">
         <v-card width="500px" v-for="toot in englishToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
             <v-card-title class="headline">
