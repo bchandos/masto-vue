@@ -77,7 +77,9 @@
                 </v-list-item-content>
             </v-list-item>
         </v-list-item-group>
-        <v-spacer />
+      </v-list>
+      <v-spacer />
+      <v-list dense>
         <v-list-item-group multiple v-model="sharedState.activeFilters">
           <v-list-item>
             <v-list-item-content>

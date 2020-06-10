@@ -25,8 +25,19 @@ export default {
     }),
     computed: {
       englishToots: function() {
-        // TODO: Optional bot filter
-        return this.sharedState.currentToots.filter(t => t.language=='en' && t.sensitive==false);
+        return this.sharedState.currentToots.filter( (t) => {
+          let combinedArray = [true];
+          if (this.sharedState.activeFilters.includes('english')) {
+            combinedArray.push(t.language=='en');
+          } 
+          if (this.sharedState.activeFilters.includes('bots')) {
+            combinedArray.push(t.account.bot==false);
+          }
+          if (this.sharedState.activeFilters.includes('sensitive')) {
+            combinedArray.push(t.sensitive==false);
+          }
+          return combinedArray.every(Boolean);
+        });
       }
     },
     filters: {
