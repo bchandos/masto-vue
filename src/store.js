@@ -7,6 +7,7 @@ export const store = {
         currentTrends: [],
         loading: false,
         activeFilters: [],
+        savedTags: [],
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 

@@ -39,14 +39,35 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-list-item-action>
-          <v-list-item-action>
-            <v-btn icon>
+          <v-list-item-action v-if="!sharedState.savedTags.includes(sharedState.currentTag)">
+            <v-btn icon @click="saveTag">
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
         <v-divider />
-        <!-- TODO: Saved tags & tag history -->
+        <!-- TODO: Persistent saving of tags -->
+        <v-list-item v-if="sharedState.savedTags.length">
+          <v-list-item-content>
+            <v-list-item-title>
+              SAVED TAGS
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-for="savedTag in sharedState.savedTags" :key="savedTag" :value="savedTag" link @click="activateSavedTag(savedTag)">
+          <v-list-item-action>
+            <v-icon>mdi-pound</v-icon>
+          </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ savedTag }}</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-action>
+            <v-btn icon @click="deleteSavedTag(savedTag)">
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+        <v-divider />
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
@@ -147,12 +168,30 @@ export default {
           } else {
             store.updatePublicTimeline();
           }
+          store.getTrends();
         },
 
         clearTag: function() {
           this.sharedState.currentTag = '';
           this.sharedState.selectedTrend = '';
           store.getPublicTimeline();
+        },
+
+        saveTag: function() {
+          this.sharedState.savedTags.push(this.sharedState.currentTag);
+        },
+
+        deleteSavedTag: function(tag) {
+          const index = this.sharedState.savedTags.indexOf(tag);
+          if (index > -1) {
+            this.sharedState.savedTags.splice(index, 1);
+          }
+        },
+
+        activateSavedTag: function(tag) {
+          this.sharedState.currentTag = tag;
+          this.sharedState.selectedTrend = '';
+          store.getTagTimeline(tag);
         },
     },
 }
