@@ -1,7 +1,12 @@
 <template>
-<div>
-  @{{ account.username }}
-  {{ account.followers_count }} Followers / {{ account.following_count }} Following / {{ account.statuses_count }} Posts
+<div class="caption d-block text-justify">
+  @{{ account.username }} 
+  <span class="ma-3">|</span> 
+  {{ account.followers_count }} Followers 
+  <span class="ma-3">|</span> 
+  {{ account.following_count }} Following 
+  <span class="ma-3">|</span> 
+  {{ account.statuses_count }} Posts
 </div>
 </template>
 
