@@ -3,6 +3,7 @@
       v-model="sharedState.navigationDrawer"
       app
       clipped
+      class="hidden"
     >
       <v-list dense>
         <v-list-item link @click="refreshCurrentFeed">
@@ -154,12 +155,19 @@ export default {
       // TODO: implement some scrolling
       // this.$vuetify.goTo(0);
       // or ... window.scrollTo(0, 0);
+        closeOnSm: function() {
+          if (this.$vuetify.breakpoint.mobile) {
+            this.sharedState.navigationDrawer = false;
+          }
+        },
+
         loadTrends: function() {
           if (this.sharedState.selectedTrend) {
             store.getTagTimeline(this.sharedState.selectedTrend);
           } else {
             store.getPublicTimeline();
           }
+          this.closeOnSm();
         },
 
         refreshCurrentFeed: function() {
@@ -169,6 +177,7 @@ export default {
             store.updatePublicTimeline();
           }
           store.getTrends();
+          this.closeOnSm();
         },
 
         clearTag: function() {
@@ -192,6 +201,7 @@ export default {
           this.sharedState.currentTag = tag;
           this.sharedState.selectedTrend = '';
           store.getTagTimeline(tag);
+          this.closeOnSm();
         },
     },
 }
