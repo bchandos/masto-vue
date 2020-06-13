@@ -1,7 +1,6 @@
 <template>
     <v-col class="shrink">
         <v-card dense dark width="500px" v-for="toot in filteredToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
-            <!-- TODO: Some kind of slick user info interface -->
             <v-hover v-slot:default="{ hover }">
               <v-card-title class="headline">
                 <v-img :src="toot.account.avatar" class="avatar ma-2" max-height="2rem" max-width="2rem"/>
@@ -15,8 +14,7 @@
             <v-card-subtitle class="overline pl-7">
             {{ toot.created_at | formatDate }}
             </v-card-subtitle>
-            <v-card-text v-if="toot.new_content" v-html="toot.new_content"></v-card-text>
-            <v-card-text v-else v-html="toot.content" @click.prevent="captureClick"></v-card-text>
+            <v-card-text v-html="toot.content" @click.prevent="captureClick"></v-card-text>
             <!-- TODO: placeholder image here and avatar (blurhash???)-->
             <v-img v-for="image in toot.media_attachments" 
               :key="image.id" 
