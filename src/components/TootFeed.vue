@@ -6,7 +6,9 @@
               <v-card-title class="headline">
                 <v-img :src="toot.account.avatar" class="avatar ma-2" max-height="2rem" max-width="2rem"/>
                 <span v-html="toot.account.display_name || toot.account.username"/>
-            <AccountInfo v-if="hover" :account="toot.account" />
+                <v-expand-transition>
+                  <AccountInfo v-if="hover" :account="toot.account" />
+                </v-expand-transition>
               </v-card-title>
             </v-hover>
             
