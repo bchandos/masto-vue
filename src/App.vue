@@ -89,6 +89,7 @@ import NavigationDrawer from './components/NavigationDrawer.vue';
         if (this.searchTag) {
           // TDOD: Clear toots on search?
           store.getTagTimeline(this.searchTag.split(' ')[0]);
+          this.sharedState.selectedTrend = '';
         }
         this.searchTag = '';
       }
