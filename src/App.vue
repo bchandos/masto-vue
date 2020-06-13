@@ -1,34 +1,7 @@
 <template>
   <v-app id="inspire">
     <NavigationDrawer />
-    <!-- TODO: Move app bar into component -->
-    <v-app-bar
-      app
-      clipped-left
-    >
-      <v-app-bar-nav-icon @click.stop="sharedState.navigationDrawer = !sharedState.navigationDrawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
-      <!-- TODO: Refine tag search -->
-      <v-toolbar-items>
-        <!-- Allow only single word lookup. Check API docs for tag length limit -->
-        <v-form @submit.prevent="searchForTag">
-          <v-text-field 
-            append-icon="mdi-magnify" 
-            prepend-inner-icon="mdi-pound"
-            class="mt-4 ml-4" 
-            clearable
-            @click:append="searchForTag"
-            @keyup.space="searchForTag"
-            v-model="searchTag" />
-        </v-form>
-      </v-toolbar-items>
-      <v-progress-linear
-        :active="sharedState.loading"
-        :indeterminate="sharedState.loading"
-        absolute
-        bottom
-      ></v-progress-linear>
-    </v-app-bar>
+    <AppBar />
     <!-- TODO: Add toast notification system (copy from budget planner?) -->
     <v-content>
       <v-container
@@ -55,11 +28,13 @@
 import { store } from "./store.js";
 import TootFeed from "./components/TootFeed.vue";
 import NavigationDrawer from './components/NavigationDrawer.vue';
+import AppBar from './components/AppBar.vue';
 
   export default {
     components: {
       TootFeed,
       NavigationDrawer,
+      AppBar,
     },
     props: {
       source: String,
