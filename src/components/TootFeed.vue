@@ -47,6 +47,8 @@ export default {
           }
           if (this.sharedState.activeFilters.includes('sensitive')) {
             combinedArray.push(t.sensitive==true);
+          } else {
+            combinedArray.push(t.sensitive==false);
           }
           return combinedArray.every(Boolean);
         });
