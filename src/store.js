@@ -9,7 +9,7 @@ export const store = {
         activeFilters: [],
         savedTags: [],
         polling: null,
-        pollingFrequency: 10000,
+        pollingFrequency: 20000,
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 
