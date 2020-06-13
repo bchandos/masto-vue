@@ -6,7 +6,7 @@
       class="hidden"
     >
       <v-list dense>
-        <v-list-item link @click="refreshCurrentFeed">
+        <v-list-item link @click="refreshAndScroll">
           <v-list-item-action>
             <v-icon>mdi-refresh</v-icon>
           </v-list-item-action>
@@ -152,13 +152,15 @@ export default {
       sharedState: store.state,
     }),
     methods: {
-      // TODO: implement some scrolling
-      // this.$vuetify.goTo(0);
-      // or ... window.scrollTo(0, 0);
+
         closeOnSm: function() {
           if (this.$vuetify.breakpoint.mobile) {
             this.sharedState.navigationDrawer = false;
           }
+        },
+
+        goToTop: function() {
+          window.scrollTo(0, 0);
         },
 
         loadTrends: function() {
@@ -168,6 +170,11 @@ export default {
             store.getPublicTimeline();
           }
           this.closeOnSm();
+        },
+
+        refreshAndScroll: function() {
+          this.refreshCurrentFeed();
+          this.goToTop();
         },
 
         refreshCurrentFeed: function() {
