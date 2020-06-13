@@ -1,7 +1,7 @@
 <template>
 <!-- TODO: Figure out desired auto-scroll behavior (maybe to top when clicking menu, no change during regular updates) -->
     <v-col class="shrink">
-        <v-card dark width="500px" v-for="toot in filteredToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
+        <v-card dense dark width="500px" v-for="toot in filteredToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
             <!-- TODO: Some kind of slick user info interface -->
             <!-- <v-hover v-slot:default="{ hover }"> -->
               <v-card-title class="headline">
@@ -46,7 +46,7 @@ export default {
             combinedArray.push(t.account.bot==false);
           }
           if (this.sharedState.activeFilters.includes('sensitive')) {
-            combinedArray.push(t.sensitive==false);
+            combinedArray.push(t.sensitive==true);
           }
           return combinedArray.every(Boolean);
         });

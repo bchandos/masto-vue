@@ -11,13 +11,16 @@
       <!-- TODO: Refine tag search -->
       <v-toolbar-items>
         <!-- Allow only single word lookup. Check API docs for tag length limit -->
-        <v-text-field 
-          append-icon="mdi-magnify" 
-          prepend-inner-icon="mdi-pound"
-          class="mt-4 ml-4" 
-          clearable
-          @change="searchForTag"
-          v-model="searchTag" />
+        <v-form @submit.prevent="searchForTag">
+          <v-text-field 
+            append-icon="mdi-magnify" 
+            prepend-inner-icon="mdi-pound"
+            class="mt-4 ml-4" 
+            clearable
+            @click:append="searchForTag"
+            @keyup.space="searchForTag"
+            v-model="searchTag" />
+        </v-form>
       </v-toolbar-items>
       <v-progress-linear
         :active="sharedState.loading"
@@ -60,29 +63,32 @@ import NavigationDrawer from './components/NavigationDrawer.vue';
     },
     props: {
       source: String,
-      searchTag: String,
     },
 
     data: () => ({
       sharedState: store.state,
+      searchTag: '',
     }),
 
     created () {
       this.$vuetify.theme.dark = true;
       store.getPublicTimeline();
       store.getTrends();
+      store.pollData();
+    },
+    beforeDestroy () {
+      clearInterval(this.sharedState.polling);
     },
     filters: {
       formatDate: function(date) {
         return new Date(date).toLocaleString('en');
       },
     },
-    // TODO: Add polling with frequency settings
-    // https://renatello.com/vue-js-polling-using-setinterval/
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
-          store.getTagTimeline(this.searchTag);
+          // TDOD: Clear toots on search?
+          store.getTagTimeline(this.searchTag.split(' ')[0]);
         }
         this.searchTag = '';
       }

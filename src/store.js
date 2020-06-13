@@ -8,6 +8,8 @@ export const store = {
         loading: false,
         activeFilters: [],
         savedTags: [],
+        polling: null,
+        pollingFrequency: 10000,
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 
@@ -90,4 +92,12 @@ export const store = {
             }
         }
     },
+    // TODO: Add polling frequency setting
+    pollData() {
+        this.state.polling = setInterval(() => {
+            if (!this.state.currentTag && !this.state.selectedTrend) {
+                this.updatePublicTimeline();
+            }
+         }, this.state.pollingFrequency);
+    }
 }
