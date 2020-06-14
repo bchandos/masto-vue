@@ -84,11 +84,14 @@ export const store = {
             // Do the same thing for display name
             if (toot.account.emojis.length) {
                 let display_name = toot.account.display_name;
+                let note = toot.account.note;
                 for (let emoji of toot.account.emojis) {
                     let re = new RegExp(`:${emoji.shortcode}:`, 'g');
-                    display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`)
+                    display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`);
+                    note = note.replace(re, `<img class="emoji" src="${emoji.url}" />`);
                 }
                 toot.account.display_name = display_name;
+                toot.account.note = note;
             }
         }
     },

@@ -154,7 +154,7 @@ export default {
     methods: {
 
         closeOnSm: function() {
-          if (this.$vuetify.breakpoint.mobile) {
+          if (this.$vuetify.breakpoint.smAndDown) {
             this.sharedState.navigationDrawer = false;
           }
         },

@@ -6,18 +6,19 @@
     <v-content>
       <v-container
         class="fill-height"
-        fluid
+        
       >
-        <v-row
-          align="center"
-          justify="center"
-        >
-        <!-- TODO: Move this column left and add another to the right for spotlight -->
-          <TootFeed />
-        </v-row>
+        <v-col>
+          <v-row
+            align="center"
+            justify="center"
+          >
+          <!-- TODO: Move this column left and add another to the right for spotlight -->
+            <TootFeed />
+          </v-row>
+        </v-col>
       </v-container>
     </v-content>
-
     <v-footer app>
       <span>&copy; 2020</span>
     </v-footer>

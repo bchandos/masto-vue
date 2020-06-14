@@ -7,6 +7,7 @@
   {{ account.following_count }} Following 
   <span class="ma-3">|</span> 
   {{ account.statuses_count }} Posts
+  <span v-if="account.note" class="d-block" v-html="account.note" />
 </div>
 </template>
 

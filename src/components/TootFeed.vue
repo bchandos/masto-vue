@@ -17,10 +17,12 @@
             <v-card-text v-html="toot.content" @click.prevent="captureClick"></v-card-text>
             <!-- TODO: placeholder image here and avatar (blurhash???)-->
             <v-img v-for="image in toot.media_attachments" 
+              contain
               :key="image.id" 
               :src="image.url"
               :alt="image.description"
               :aspect-ratio="image.aspect"
+              class="mt-2 mb-2"
               ></v-img>
         </v-card>
     </v-col>
