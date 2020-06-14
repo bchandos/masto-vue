@@ -10,6 +10,7 @@ export const store = {
         savedTags: [],
         polling: null,
         pollingFrequency: 20000,
+        lazyAvatarUrl: 'https://mastodon.social/avatars/original/missing.png',
     },
     BASE_URL: 'https://mastodon.social/api/v1',
 
