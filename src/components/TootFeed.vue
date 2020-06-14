@@ -3,7 +3,12 @@
         <v-card dense dark width="500px" v-for="toot in filteredToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
             <v-hover v-slot:default="{ hover }">
               <v-card-title class="headline">
-                <v-img :src="toot.account.avatar" class="avatar ma-2" max-height="2rem" max-width="2rem"/>
+                <v-img 
+                  :src="toot.account.avatar" 
+                  :lazy-src="sharedState.lazyAvatarUrl"
+                  class="avatar ma-2"
+                  max-height="2rem" 
+                  max-width="2rem"/>
                 <span v-html="toot.account.display_name || toot.account.username"/>
                 <v-expand-transition>
                   <AccountInfo v-if="hover" :account="toot.account" />
@@ -15,12 +20,14 @@
             {{ toot.created_at | formatDate }}
             </v-card-subtitle>
             <v-card-text v-html="toot.content" @click.prevent="captureClick"></v-card-text>
-            <!-- TODO: placeholder image here and avatar (blurhash???)-->
+            <!-- TODO: image overflow -->
             <v-img v-for="image in toot.media_attachments" 
               contain
               :key="image.id" 
               :src="image.url"
+              :lazy-src="image.preview_url"
               :alt="image.description"
+              :height="484 / image.aspect"
               :aspect-ratio="image.aspect"
               class="mt-2 mb-2"
               ></v-img>
