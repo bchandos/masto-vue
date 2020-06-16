@@ -3,7 +3,7 @@
       app
       clipped-left
     >
-      <v-app-bar-nav-icon @click.stop="sharedState.navigationDrawer = !sharedState.navigationDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="appState.navigationDrawer = !appState.navigationDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
       <v-toolbar-items>
         <v-form @submit.prevent="searchForTag">
@@ -18,8 +18,8 @@
         </v-form>
       </v-toolbar-items>
       <v-progress-linear
-        :active="sharedState.loading"
-        :indeterminate="sharedState.loading"
+        :active="appState.loading"
+        :indeterminate="appState.loading"
         absolute
         bottom
       ></v-progress-linear>
@@ -30,7 +30,9 @@ import { store } from "../store.js";
 
   export default {
     data: () => ({
-      sharedState: store.state,
+      userState: store.state.userState,
+      appState: store.state.appState,
+      settings: store.state.settings,
       searchTag: '',
     }),
 
@@ -39,7 +41,7 @@ import { store } from "../store.js";
         if (this.searchTag) {
           // TDOD: Clear toots on search?
           store.getTagTimeline(this.searchTag.split(' ')[0]);
-          this.sharedState.selectedTrend = '';
+          this.userState.selectedTrend = '';
         }
         this.searchTag = '';
       }

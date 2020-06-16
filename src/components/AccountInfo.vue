@@ -16,7 +16,9 @@ import { store } from "../store.js";
 
 export default {
     data: () => ({
-      sharedState: store.state,
+      userState: store.state.userState,
+      appState: store.state.appState,
+      settings: store.state.settings,
     }),
     props: {
         account: Object,

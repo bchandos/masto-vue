@@ -6,21 +6,18 @@
     <v-content>
       <v-container
         class="fill-height"
-        
       >
-        <v-col>
-          <v-row
-            align="center"
-            justify="center"
-          >
+        <v-row
+          align="center"
+          justify="center"
+        >
           <!-- TODO: Move this column left and add another to the right for spotlight -->
-            <TootFeed />
-          </v-row>
-        </v-col>
+          <TootFeed v-if="appState.primaryView == 'feed'" />
+        </v-row>
       </v-container>
     </v-content>
     <v-footer app>
-      <span>&copy; 2020</span>
+      <span>&copy; 2020 <a href="https://billchandos.dev">billchandos.dev</a></span>
     </v-footer>
   </v-app>
 </template>
@@ -42,8 +39,9 @@ import AppBar from './components/AppBar.vue';
     },
 
     data: () => ({
-      sharedState: store.state,
-      searchTag: '',
+      userState: store.state.userState,
+      appState: store.state.appState,
+      settings: store.state.settings,
     }),
 
     created () {
@@ -53,22 +51,7 @@ import AppBar from './components/AppBar.vue';
       store.pollData();
     },
     beforeDestroy () {
-      clearInterval(this.sharedState.polling);
-    },
-    filters: {
-      formatDate: function(date) {
-        return new Date(date).toLocaleString('en');
-      },
-    },
-    methods: {
-      searchForTag: function() {
-        if (this.searchTag) {
-          // TDOD: Clear toots on search?
-          store.getTagTimeline(this.searchTag.split(' ')[0]);
-          this.sharedState.selectedTrend = '';
-        }
-        this.searchTag = '';
-      }
+      clearInterval(this.appState.polling);
     },
   }
 </script>

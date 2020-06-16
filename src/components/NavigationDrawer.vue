@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer
-      v-model="sharedState.navigationDrawer"
+      v-model="appState.navigationDrawer"
       app
       clipped
       class="hidden"
@@ -23,16 +23,16 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider/>
-        <v-subheader v-if="sharedState.currentTag">
+        <v-subheader v-if="userState.currentTag">
           CURRENT TAG
         </v-subheader>
-        <v-list-item v-if="sharedState.currentTag">
+        <v-list-item v-if="userState.currentTag">
           <v-list-item-action>
             <v-icon>mdi-pound</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              {{ sharedState.currentTag }}
+              {{ userState.currentTag }}
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
@@ -40,7 +40,7 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-list-item-action>
-          <v-list-item-action v-if="!sharedState.savedTags.includes(sharedState.currentTag)">
+          <v-list-item-action v-if="!userState.savedTags.includes(userState.currentTag)">
             <v-btn icon @click="saveTag">
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
@@ -48,14 +48,18 @@
         </v-list-item>
         <v-divider />
         <!-- TODO: Persistent saving of tags -->
-        <v-list-item v-if="sharedState.savedTags.length">
+        <v-list-item v-if="userState.savedTags.length">
           <v-list-item-content>
             <v-list-item-title>
               SAVED TAGS
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-for="savedTag in sharedState.savedTags" :key="savedTag" :value="savedTag" link @click="activateSavedTag(savedTag)">
+        <v-list-item 
+          v-for="savedTag in userState.savedTags" 
+          :key="savedTag" 
+          :value="savedTag" 
+          link @click="activateSavedTag(savedTag)">
           <v-list-item-action>
             <v-icon>mdi-pound</v-icon>
           </v-list-item-action>
@@ -76,7 +80,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item-group v-model="sharedState.selectedTrend">
+        <v-list-item-group v-model="userState.selectedTrend">
             <v-list-item key="cats-debug" value="cats" @click.native="loadTrends">
               <v-list-item-action>
                 <v-icon>mdi-pound</v-icon>
@@ -86,7 +90,7 @@
                 </v-list-item-content>
             </v-list-item>
             <v-list-item 
-              v-for="trend in sharedState.currentTrends" 
+              v-for="trend in appState.currentTrends" 
               :key="trend.name" 
               :value="trend.name"
               @click.native="loadTrends"
@@ -102,7 +106,7 @@
       </v-list>
       <v-spacer />
       <v-list dense>
-        <v-list-item-group multiple v-model="sharedState.activeFilters">
+        <v-list-item-group multiple v-model="userState.activeFilters">
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
@@ -149,13 +153,15 @@ import { store } from "../store.js";
 
 export default {
     data: () => ({
-      sharedState: store.state,
+      userState: store.state.userState,
+      appState: store.state.appState,
+      settings: store.state.settings,
     }),
     methods: {
 
         closeOnSm: function() {
           if (this.$vuetify.breakpoint.smAndDown) {
-            this.sharedState.navigationDrawer = false;
+            this.appState.navigationDrawer = false;
           }
         },
 
@@ -164,8 +170,8 @@ export default {
         },
 
         loadTrends: function() {
-          if (this.sharedState.selectedTrend) {
-            store.getTagTimeline(this.sharedState.selectedTrend);
+          if (this.userState.selectedTrend) {
+            store.getTagTimeline(this.userState.selectedTrend);
           } else {
             store.getPublicTimeline();
           }
@@ -178,7 +184,7 @@ export default {
         },
 
         refreshCurrentFeed: function() {
-          if (this.sharedState.selectedTrend || this.sharedState.currentTag) {
+          if (this.userState.selectedTrend || this.userState.currentTag) {
             store.updateTagTimeline();
           } else {
             store.updatePublicTimeline();
@@ -188,25 +194,25 @@ export default {
         },
 
         clearTag: function() {
-          this.sharedState.currentTag = '';
-          this.sharedState.selectedTrend = '';
+          this.userState.currentTag = '';
+          this.userState.selectedTrend = '';
           store.getPublicTimeline();
         },
 
         saveTag: function() {
-          this.sharedState.savedTags.push(this.sharedState.currentTag);
+          this.userState.savedTags.push(this.userState.currentTag);
         },
 
         deleteSavedTag: function(tag) {
-          const index = this.sharedState.savedTags.indexOf(tag);
+          const index = this.userState.savedTags.indexOf(tag);
           if (index > -1) {
-            this.sharedState.savedTags.splice(index, 1);
+            this.userState.savedTags.splice(index, 1);
           }
         },
 
         activateSavedTag: function(tag) {
-          this.sharedState.currentTag = tag;
-          this.sharedState.selectedTrend = '';
+          this.userState.currentTag = tag;
+          this.userState.selectedTrend = '';
           store.getTagTimeline(tag);
           this.closeOnSm();
         },
