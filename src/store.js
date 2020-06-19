@@ -20,6 +20,7 @@ export const store = {
             BASE_URL: 'https://mastodon.social/api/v1',
             lazyAvatarUrl: 'https://mastodon.social/avatars/original/missing.png',
             pollingFrequency: 20000,
+            toastTimeout: 4000,
         },
     },
 
@@ -126,7 +127,7 @@ export const store = {
     // TODO: Add polling frequency setting
     pollData() {
         this.state.appState.polling = setInterval(() => {
-            if (!this.state.userState.currentTag && !this.state.userState.selectedTrend && !this.state.userState.currentAccount) {
+            if (!this.state.userState.currentTag) {
                 this.updatePublicTimeline();
             }
          }, this.state.settings.pollingFrequency);
