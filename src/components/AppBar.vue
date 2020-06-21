@@ -4,7 +4,12 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="appState.navigationDrawer = !appState.navigationDrawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Mastodon Vuer</v-toolbar-title>
+      <v-toolbar-title v-if="$vuetify.breakpoint.smAndDown">
+        <v-img src="../assets/logo.png" max-width="1.5em" />
+      </v-toolbar-title>
+      <v-toolbar-title v-else>
+        Mastodon Vuer
+      </v-toolbar-title>
       <v-toolbar-items>
         <v-form @submit.prevent="searchForTag">
           <v-text-field 
@@ -16,6 +21,12 @@
             @keyup.space="searchForTag"
             v-model="searchTag" />
         </v-form>
+        <v-btn 
+          icon
+          :color="appState.continuousRefresh ? 'light-blue' : ''"
+          @click="toggleRefresh">
+          <v-icon>mdi-cloud-refresh</v-icon>
+        </v-btn>
       </v-toolbar-items>
       <v-progress-linear
         :active="appState.loading"
@@ -44,7 +55,12 @@ import { store } from "../store.js";
           this.userState.selectedTrend = '';
         }
         this.searchTag = '';
-      }
+      },
+
+      toggleRefresh: function() {
+        this.appState.continuousRefresh = !this.appState.continuousRefresh;
+        store.pollData();
+      },
     },
   }
 </script>

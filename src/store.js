@@ -15,6 +15,7 @@ export const store = {
             polling: null,
             navigationDrawer: false,
             currentTrends: [],
+            continuousRefresh: false,
         },
         settings: {
             BASE_URL: 'https://mastodon.social/api/v1',
@@ -126,10 +127,14 @@ export const store = {
     },
     // TODO: Add polling frequency setting
     pollData() {
-        this.state.appState.polling = setInterval(() => {
-            if (!this.state.userState.currentTag) {
-                this.updatePublicTimeline();
-            }
-         }, this.state.settings.pollingFrequency);
+        if (this.state.appState.continuousRefresh) {
+            this.state.appState.polling = setInterval(() => {
+                if (!this.state.userState.currentTag) {
+                    this.updatePublicTimeline();
+                }
+             }, this.state.settings.pollingFrequency);
+        } else {
+            clearInterval(this.state.appState.polling);
+        }
     }
 }
