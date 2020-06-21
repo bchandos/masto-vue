@@ -3,8 +3,13 @@
       <v-card v-if="userState.currentAccount">
         <!-- TODO: Add account header card -->
       </v-card>
-
-        <v-card dense dark width="500px" v-for="toot in filteredToots" :key="toot.id" class="grey darken-3 pa-2 ma-2">
+        <v-card 
+          dense 
+          dark 
+          width="500px" 
+          v-for="toot in filteredToots" 
+          :key="toot.id" 
+          class="grey darken-3 pa-2 ma-2 hide-overflow">
             <v-hover v-slot:default="{ hover }">
               <v-card-title class="headline">
                 <v-img 
@@ -21,22 +26,37 @@
                 </v-expand-transition>
               </v-card-title>
             </v-hover>
-            <!-- TODO: Handle Toot Cards -->
             <v-card-subtitle class="overline pl-7">
               {{ toot.created_at | formatDate }} <span class="ma-3">|</span> {{ toot.account.acct }}
             </v-card-subtitle>
-            <v-card-text v-html="toot.content" @click.prevent="captureClick(toot.mentions, toot.tags, $event)"></v-card-text>
-            <!-- TODO: image overflow -->
-            <!-- TODO: dynamically determine width below -->
-            
-              <v-card v-if="toot.card">
+            <v-card-text 
+              v-html="toot.content" 
+              @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
+              />
+              <v-card 
+                v-if="toot.card" 
+                :href="toot.url">
                 <v-card-title>
-                  {{ toot.card.title }}
+                  <v-row>
+                    <!-- TODO: Image still looks small -->
+                    <v-col cols="2" align-self="center">
+                      <v-img v-if="toot.card.image" 
+                        :src="toot.card.image"
+                        class="ml-2" 
+                        />
+                    </v-col>
+                    <v-col cols="10" class="pl-0">
+                        {{ toot.card.title }}
+                    </v-col>
+                  </v-row>
                 </v-card-title>
                 <v-card-subtitle>
                   {{ toot.card.description }}
                 </v-card-subtitle>
               </v-card>
+            <!-- TODO: card overflow -->
+            <!-- TODO: dynamically determine width below -->
+            <!-- TODO: GIF/movie support -->
             <v-img v-for="image in toot.media_attachments" 
               contain
               :key="image.id" 
@@ -46,11 +66,14 @@
               :aspect-ratio="image.aspect"
               class="mt-2 mb-2"
               ></v-img>
-          <v-card-subtitle>
-            <v-icon>mdi-comment-outline</v-icon> {{ toot.replies_count }}
-            <v-icon class="pl-6">mdi-repeat</v-icon> {{ toot.reblogs_count }}
-            <v-icon class="pl-6">mdi-heart-outline</v-icon> {{ toot.favourites_count }}
-          </v-card-subtitle>
+          <v-card-actions>
+            <v-btn icon><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
+            <v-spacer/>
+            <v-btn icon><v-icon>mdi-repeat</v-icon></v-btn> {{ toot.reblogs_count }}
+            <v-spacer />
+            <v-btn icon><v-icon>mdi-heart-outline</v-icon></v-btn> {{ toot.favourites_count }}
+            <v-spacer/>
+          </v-card-actions>
         </v-card>
     </v-col>
 </template>
@@ -78,9 +101,7 @@ export default {
           if (this.userState.activeFilters.includes('bots')) {
             combinedArray.push(t.account.bot==false);
           }
-          if (this.userState.activeFilters.includes('sensitive')) {
-            combinedArray.push(true);
-          } else {
+          if (!this.userState.activeFilters.includes('sensitive')) {
             combinedArray.push(t.sensitive==false);
           }
           return combinedArray.every(Boolean);
@@ -108,6 +129,7 @@ export default {
         // it's a normal link
         if (target != null) {
           const href = target.href;
+          // Only check for mention and tags if they exist
           if (mentions.length || tags.length) {
             const classes = target.classList;
             if (classes.contains('hashtag') && tags.length) {
@@ -116,6 +138,8 @@ export default {
             } else if (classes.contains('mention') && mentions.length) {
               // TODO: Handle user profile navigation
               const mentionId = mentions.find(e => e.url == href).id;
+              // TODO: Figure out if this ID is universal or unique
+              //  to the mastodon server
               console.log(mentionId);
             }
           } else {
@@ -127,3 +151,9 @@ export default {
     },
 }
 </script>
+
+<style>
+  .hide-overflow {
+    overflow: hidden;
+  }
+</style>
