@@ -36,7 +36,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn icon @click="clearTag">
+            <v-btn icon @click="store.clearTag">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -179,24 +179,10 @@ export default {
         },
 
         refreshAndScroll: function() {
-          this.refreshCurrentFeed();
-          this.goToTop();
-        },
-
-        refreshCurrentFeed: function() {
-          if (this.userState.selectedTrend || this.userState.currentTag) {
-            store.updateTagTimeline();
-          } else {
-            store.updatePublicTimeline();
-          }
+          store.updateCurrentFeed();
           store.getTrends();
           this.closeOnSm();
-        },
-
-        clearTag: function() {
-          this.userState.currentTag = '';
-          this.userState.selectedTrend = '';
-          store.getPublicTimeline();
+          this.goToTop();
         },
 
         saveTag: function() {
