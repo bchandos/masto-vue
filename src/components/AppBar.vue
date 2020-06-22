@@ -4,11 +4,16 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="appState.navigationDrawer = !appState.navigationDrawer"></v-app-bar-nav-icon>
-      <v-toolbar-title v-if="$vuetify.breakpoint.smAndDown">
-        <v-img src="../assets/logo.png" max-width="1.5em" />
-      </v-toolbar-title>
-      <v-toolbar-title v-else>
-        Mastodon Vuer
+      <v-toolbar-title>
+        <v-img 
+          src="../assets/logo.png" 
+          max-width="1.5em" 
+          class="d-inline-flex mr-2 mt-2"/>
+        <span 
+          v-if="$vuetify.breakpoint.mdAndUp" 
+          class="d-inline-flex">
+          Mastodon Vuer
+        </span>
       </v-toolbar-title>
       <v-toolbar-items>
         <v-form @submit.prevent="searchForTag">
@@ -18,6 +23,7 @@
             class="mt-4 ml-4" 
             clearable
             @click:append="searchForTag"
+            @click:clear="store.clearTag"
             @keyup.space="searchForTag"
             v-model="searchTag" />
         </v-form>
@@ -50,15 +56,15 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
-          // TDOD: Clear toots on search?
+          this.appState.currentToots = [];
           store.getTagTimeline(this.searchTag.split(' ')[0]);
           this.userState.selectedTrend = '';
         }
-        this.searchTag = '';
       },
 
       toggleRefresh: function() {
         this.appState.continuousRefresh = !this.appState.continuousRefresh;
+        store.updateCurrentFeed();
         store.pollData();
       },
     },
