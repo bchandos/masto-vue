@@ -50,7 +50,7 @@
                     </v-col>
                   </v-row>
                 </v-card-title>
-                <v-card-subtitle>
+                <v-card-subtitle class="text-truncate">
                   {{ toot.card.description }}
                 </v-card-subtitle>
               </v-card>
