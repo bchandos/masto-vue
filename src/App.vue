@@ -49,6 +49,9 @@ import AppBar from './components/AppBar.vue';
       store.getPublicTimeline();
       store.getTrends();
       store.pollData();
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        this.appState.navigationDrawer = true;
+      }
     },
     beforeDestroy () {
       clearInterval(this.appState.polling);
