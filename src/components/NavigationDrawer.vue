@@ -36,7 +36,7 @@
             </v-list-item-title>
           </v-list-item-content>
           <v-list-item-action>
-            <v-btn icon @click="store.clearTag">
+            <v-btn icon @click="clearTag">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-list-item-action>
@@ -194,6 +194,10 @@ export default {
           if (index > -1) {
             this.userState.savedTags.splice(index, 1);
           }
+        },
+
+        clearTag: function() {
+          store.clearTag();
         },
 
         activateSavedTag: function(tag) {

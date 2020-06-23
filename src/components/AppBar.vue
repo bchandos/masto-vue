@@ -23,7 +23,7 @@
             class="mt-4 ml-4" 
             clearable
             @click:append="searchForTag"
-            @click:clear="store.clearTag"
+            @click:clear="clearTag"
             @keyup.space="searchForTag"
             v-model="searchTag" />
         </v-form>
@@ -60,6 +60,10 @@ import { store } from "../store.js";
           store.getTagTimeline(this.searchTag.split(' ')[0]);
           this.userState.selectedTrend = '';
         }
+      },
+
+      clearTag: function() {
+        store.clearTag();
       },
 
       toggleRefresh: function() {
