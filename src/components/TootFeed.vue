@@ -33,27 +33,7 @@
               v-html="toot.content" 
               @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
               />
-              <v-card 
-                v-if="toot.card" 
-                :href="toot.url">
-                <v-card-title>
-                  <v-row>
-                    <!-- TODO: Image still looks small -->
-                    <v-col cols="2" align-self="center">
-                      <v-img v-if="toot.card.image" 
-                        :src="toot.card.image"
-                        class="ml-2" 
-                        />
-                    </v-col>
-                    <v-col cols="10" class="pl-0">
-                        {{ toot.card.title }}
-                    </v-col>
-                  </v-row>
-                </v-card-title>
-                <v-card-subtitle class="text-truncate">
-                  {{ toot.card.description }}
-                </v-card-subtitle>
-              </v-card>
+            <TootCard v-if="toot.card" :card="toot.card" />
             <!-- TODO: card overflow -->
             <!-- TODO: dynamically determine width below -->
             <!-- TODO: GIF/movie support -->
@@ -81,10 +61,12 @@
 <script>
 import { store } from "../store.js";
 import AccountInfo from '../components/AccountInfo.vue';
+import TootCard from '../components/TootCard.vue';
 
 export default {
     components: {
       AccountInfo,
+      TootCard,
     },
     data: () => ({
       userState: store.state.userState,
