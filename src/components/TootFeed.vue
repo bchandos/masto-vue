@@ -1,8 +1,7 @@
 <template>
     <v-col class="shrink">
-      <v-card v-if="userState.currentAccount">
+      <AccountHeader v-if="appState.feedView=='account'" />
         <!-- TODO: Add account header card -->
-      </v-card>
         <v-card 
           dense 
           dark 
@@ -22,7 +21,7 @@
                   />
                 <span v-html="toot.account.display_name || toot.account.username"/>
                 <v-expand-transition>
-                  <AccountInfo v-if="hover" :account="toot.account" />
+                  <AccountInfo v-if="hover && appState.feedView!='account'" :account="toot.account" />
                 </v-expand-transition>
               </v-card-title>
             </v-hover>
@@ -36,16 +35,25 @@
             <TootCard v-if="toot.card" :card="toot.card" />
             <!-- TODO: card overflow -->
             <!-- TODO: dynamically determine width below -->
-            <!-- TODO: GIF/movie support -->
-            <v-img v-for="image in toot.media_attachments" 
+            <!-- TODO: GIF/movie stop after x loops? -->
+            <div v-for="image in toot.media_attachments" :key="image.id">
+              <v-img
+              v-if="image.type!='gifv'"
               contain
-              :key="image.id" 
               :src="image.url"
               :lazy-src="image.preview_url"
               :alt="image.description"
               :aspect-ratio="image.aspect"
               class="mt-2 mb-2"
               ></v-img>
+              <video 
+                v-if="image.type=='gifv'" 
+                autoplay 
+                loop 
+                muted>
+                <source :src="image.url" type="video/mp4"/>
+              </video>
+            </div>
           <v-card-actions>
             <v-btn icon><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
             <v-spacer/>
@@ -62,11 +70,13 @@
 import { store } from "../store.js";
 import AccountInfo from '../components/AccountInfo.vue';
 import TootCard from '../components/TootCard.vue';
+import AccountHeader from '../components/AccountHeader'
 
 export default {
     components: {
       AccountInfo,
       TootCard,
+      AccountHeader,
     },
     data: () => ({
       userState: store.state.userState,
@@ -122,14 +132,19 @@ export default {
               const mentionId = mentions.find(e => e.url == href).id;
               // TODO: Figure out if this ID is universal or unique
               //  to the mastodon server
-              console.log(mentionId);
+              this.loadAccount(mentionId);
             }
           } else {
             window.open(href, '_blank');
           }
         }
 
-      }
+      },
+
+      loadAccount: function(id) {
+        this.appState.feedView = 'account';
+        store.getUserTimeline(id);
+      },
     },
 }
 </script>

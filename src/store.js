@@ -6,7 +6,7 @@ export const store = {
             selectedTrend: '',
             savedTags: [],
             currentTag: '',
-            currentAccount: {},
+            currentAccount: null,
         },
         appState: {
             loading: false,

@@ -56,6 +56,7 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
+          this.appState.feedView = 'tag';
           this.appState.currentToots = [];
           store.getTagTimeline(this.searchTag.split(' ')[0]);
           this.userState.selectedTrend = '';
