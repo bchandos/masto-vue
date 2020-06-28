@@ -3,7 +3,8 @@
       app
       clipped-left
     >
-      <v-app-bar-nav-icon @click.stop="appState.navigationDrawer = !appState.navigationDrawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon 
+        @click.stop="appState.navigationDrawer = !appState.navigationDrawer" />
       <v-toolbar-title>
         <v-img 
           src="../assets/logo.png" 
@@ -56,6 +57,7 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
+          // TODO: Strip non-characters
           this.appState.feedView = 'tag';
           this.appState.currentToots = [];
           store.getTagTimeline(this.searchTag.split(' ')[0]);
