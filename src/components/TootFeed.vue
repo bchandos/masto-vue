@@ -1,7 +1,7 @@
 <template>
     <v-col class="shrink">
       <AccountHeader v-if="appState.feedView=='account'" />
-        <!-- TODO: Add account header card -->
+        <div v-intersect="onIntersect" />
         <v-card 
           dense 
           dark 
@@ -63,6 +63,17 @@
             <v-spacer/>
           </v-card-actions>
         </v-card>
+        <v-fab-transition>
+          <v-btn
+            v-show="!appState.isIntersecting"
+            fab
+            fixed
+            bottom
+            @click="$vuetify.goTo(0)"
+          >
+            <v-icon>mdi-chevron-up</v-icon>
+          </v-btn>
+        </v-fab-transition>
     </v-col>
 </template>
 
@@ -144,6 +155,12 @@ export default {
       loadAccount: function(id) {
         this.appState.feedView = 'account';
         store.getUserTimeline(id);
+      },
+
+      onIntersect (entries) {
+        // More information about these options
+        // is located here: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+        this.appState.isIntersecting = entries[0].isIntersecting
       },
     },
 }

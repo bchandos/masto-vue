@@ -17,6 +17,8 @@ export const store = {
             currentTrends: [],
             continuousRefresh: false,
             feedView: 'public',
+            settingsDialog: false,
+            isIntersecting: true,
         },
         settings: {
             BASE_URL: 'https://mastodon.social/api/v1',
@@ -146,7 +148,6 @@ export const store = {
             }
         }
     },
-    // TODO: Add updateCurrentFeed()
     updateCurrentFeed() {
         if (this.state.appState.feedView=='public') {
             this.updatePublicTimeline();
@@ -171,6 +172,7 @@ export const store = {
     clearTag() {
         this.state.userState.currentTag = '';
         this.state.userState.selectedTrend = '';
+        this.state.
         this.state.appState.feedView = 'public';
         this.getPublicTimeline();
     },
