@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <Settings v-if="appState.settingsDialog" />
     <NavigationDrawer />
     <AppBar />
     <!-- TODO: Add toast notification system (copy from budget planner?) -->
@@ -17,6 +18,7 @@
       </v-container>
     </v-content>
     <v-footer app>
+      <v-spacer />
       <span>&copy; 2020 <a href="https://billchandos.dev">billchandos.dev</a></span>
     </v-footer>
   </v-app>
@@ -27,12 +29,14 @@ import { store } from "./store.js";
 import TootFeed from "./components/TootFeed.vue";
 import NavigationDrawer from './components/NavigationDrawer.vue';
 import AppBar from './components/AppBar.vue';
+import Settings from './components/Settings.vue';
 
   export default {
     components: {
       TootFeed,
       NavigationDrawer,
       AppBar,
+      Settings,
     },
     props: {
       source: String,
