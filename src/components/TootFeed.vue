@@ -71,7 +71,7 @@
             bottom
             @click="$vuetify.goTo(0)"
           >
-            <v-icon>mdi-chevron-up</v-icon>
+            <v-icon color="light-blue">mdi-chevron-up</v-icon>
           </v-btn>
         </v-fab-transition>
     </v-col>
