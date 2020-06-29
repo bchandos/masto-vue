@@ -19,6 +19,8 @@ export const store = {
             feedView: 'public',
             settingsDialog: false,
             isIntersecting: true,
+            oldestTootInFeed: '',
+            newestTootInFeed: '',
         },
         settings: {
             BASE_URL: 'https://mastodon.social/api/v1',
@@ -70,6 +72,7 @@ export const store = {
         this.state.appState.currentToots = json_response;
         this.replaceEmoji();
         this.state.appState.loading = false;
+        this.firstAndLast();
     },
     
     async updatePublicTimeline(limit=this.state.settings.requestLimit) {
@@ -175,5 +178,10 @@ export const store = {
         this.state.
         this.state.appState.feedView = 'public';
         this.getPublicTimeline();
+    },
+
+    firstAndLast() {
+        this.state.appState.oldestTootInFeed = this.state.appState.currentToots.slice(-1)[0].id;
+        this.state.appState.newestTootInFeed = this.state.appState.currentToots[0].id;
     },
 }
