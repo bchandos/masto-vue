@@ -9,7 +9,9 @@
         <v-img 
           src="../assets/logo.png" 
           max-width="1.5em" 
-          class="d-inline-flex mr-2 mt-2"/>
+          class="d-inline-flex mr-2 mt-2"
+          @click="resetApp"
+          />
         <span 
           v-if="$vuetify.breakpoint.mdAndUp" 
           class="d-inline-flex">
@@ -73,6 +75,14 @@ import { store } from "../store.js";
         this.appState.continuousRefresh = !this.appState.continuousRefresh;
         store.updateCurrentFeed();
         store.pollData();
+      },
+
+      resetApp: function() {
+        this.userState.selectedTrend = '';
+        this.appState.feedView = 'public';
+        this.appState.currentToots = [];
+        this.userState.currentAccount = null;
+        store.getPublicTimeline();
       },
     },
   }
