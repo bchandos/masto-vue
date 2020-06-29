@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Make this card float at the top... -->
     <v-card width="700px" >
         <v-card-title class="headline">
             <v-img 
@@ -9,6 +10,7 @@
                 max-width="5rem"
                 />
             <span v-html="userState.currentAccount.display_name || userState.currentAccount.username"/>
+            <!-- TODO: ...except for this part -->
             <AccountInfo :account="userState.currentAccount" />
         </v-card-title>
     </v-card>
