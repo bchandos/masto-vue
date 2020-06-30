@@ -44,7 +44,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots = json_response;
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.appState.loading = false;
     },
 
@@ -56,7 +56,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots.unshift(...json_response);
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.appState.loading = false;
     },
 
@@ -70,7 +70,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots = json_response;
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.appState.loading = false;
         this.firstAndLast();
     },
@@ -83,7 +83,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots.unshift(...json_response);
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.appState.loading = false;
     },
 
@@ -98,7 +98,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots = json_response;
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.userState.currentAccount = this.state.appState.currentToots[0].account;
         window.scrollTo(0, 0);
         this.state.appState.loading = false;
@@ -114,7 +114,7 @@ export const store = {
         });
         const json_response = await response.json();
         this.state.appState.currentToots.unshift(...json_response);
-        this.replaceEmoji();
+        this.postProcessToot();
         this.state.appState.loading = false;
     },
 
@@ -126,7 +126,7 @@ export const store = {
         this.state.appState.currentTrends = json_response;
     },
 
-    replaceEmoji() {
+    async postProcessToot() {
         // Replace custom emoji shortcodes with the actual image in the toot contents
         for (let toot of this.state.appState.currentToots) {
             if (toot.emojis.length) {
@@ -149,6 +149,15 @@ export const store = {
                 toot.account.display_name = display_name;
                 toot.account.note = note;
             }
+            // If toot has a reply, fetch it and add it
+            if (toot.in_reply_to_id) {
+                const response = await fetch(`${this.state.settings.BASE_URL}/statuses/${toot.in_reply_to_id}`, {
+                    method: 'GET',
+                });
+                const json_response = await response.json();
+                toot.in_reply_to = json_response;
+            }
+
         }
     },
     updateCurrentFeed() {

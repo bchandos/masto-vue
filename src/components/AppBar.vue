@@ -6,6 +6,7 @@
       <v-app-bar-nav-icon 
         @click.stop="appState.navigationDrawer = !appState.navigationDrawer" />
       <v-toolbar-title>
+        <!-- TODO: Custom logo -->
         <v-img 
           src="../assets/logo.png" 
           max-width="1.5em" 

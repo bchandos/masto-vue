@@ -28,6 +28,7 @@
             <v-card-subtitle class="overline pl-7">
               {{ toot.created_at | formatDate }} <span class="ma-3">|</span> {{ toot.account.acct }}
             </v-card-subtitle>
+            <Toot v-if="toot.hasOwnProperty('in_reply_to')" :toot="toot.in_reply_to" />
             <v-card-text 
               v-html="toot.content" 
               @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
@@ -67,6 +68,7 @@ import AccountInfo from '../components/AccountInfo.vue';
 import TootCard from '../components/TootCard.vue';
 import AccountHeader from '../components/AccountHeader';
 import TootImage from '../components/TootImage';
+import Toot from '../components/Toot';
 
 export default {
     components: {
@@ -74,6 +76,7 @@ export default {
       TootCard,
       AccountHeader,
       TootImage,
+      Toot,
     },
     data: () => ({
       userState: store.state.userState,
