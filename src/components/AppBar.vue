@@ -73,8 +73,10 @@ import { store } from "../store.js";
 
       toggleRefresh: function() {
         this.appState.continuousRefresh = !this.appState.continuousRefresh;
-        store.updateCurrentFeed();
         store.pollData();
+        if (this.appState.continuousRefresh) {
+          store.updateCurrentFeed();
+        }
       },
 
       resetApp: function() {
