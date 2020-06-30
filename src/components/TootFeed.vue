@@ -33,27 +33,11 @@
               @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
               />
             <TootCard v-if="toot.card" :card="toot.card" />
-            <!-- TODO: card overflow -->
-            <!-- TODO: dynamically determine width below -->
-            <!-- TODO: GIF/movie stop after x loops? -->
-            <div v-for="image in toot.media_attachments" :key="image.id">
-              <v-img
-              v-if="image.type!='gifv'"
-              contain
-              :src="image.url"
-              :lazy-src="image.preview_url"
-              :alt="image.description"
-              :aspect-ratio="image.aspect"
-              class="mt-2 mb-2"
-              ></v-img>
-              <video 
-                v-if="image.type=='gifv'" 
-                autoplay 
-                loop 
-                muted>
-                <source :src="image.url" type="video/mp4"/>
-              </video>
-            </div>
+           
+            <TootImage 
+              v-if="toot.media_attachments.length"
+              :mediaAttachments="toot.media_attachments" 
+            />
           <v-card-actions>
             <v-btn icon><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
             <v-spacer/>
@@ -81,13 +65,15 @@
 import { store } from "../store.js";
 import AccountInfo from '../components/AccountInfo.vue';
 import TootCard from '../components/TootCard.vue';
-import AccountHeader from '../components/AccountHeader'
+import AccountHeader from '../components/AccountHeader';
+import TootImage from '../components/TootImage';
 
 export default {
     components: {
       AccountInfo,
       TootCard,
       AccountHeader,
+      TootImage,
     },
     data: () => ({
       userState: store.state.userState,
