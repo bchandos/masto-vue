@@ -7,7 +7,7 @@
     {{ account.following_count }} Following 
     <span class="ma-3">|</span> 
     {{ account.statuses_count }} Posts
-    <span v-if="account.note" class="d-block" v-html="account.note" />
+    <span v-if="account.note && displayNote" class="d-block" v-html="account.note" />
   </div>
 </template>
 
@@ -22,6 +22,11 @@ export default {
     }),
     props: {
         account: Object,
+        displayNote: {
+          type: Boolean,
+          required: false,
+          default: true,
+        }
     }
 }
 </script>

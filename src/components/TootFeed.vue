@@ -1,11 +1,11 @@
 <template>
-    <v-col class="shrink">
+    <v-col>
       <AccountHeader v-if="appState.feedView=='account'" />
         <div v-intersect="onIntersect" />
         <v-card 
           dense 
           dark 
-          width="500px" 
+          max-width="600px"
           v-for="toot in filteredToots" 
           :key="toot.id" 
           class="grey darken-3 pa-2 ma-2 hide-overflow">
@@ -21,7 +21,11 @@
                   />
                 <span v-html="toot.account.display_name || toot.account.username"/>
                 <v-expand-transition>
-                  <AccountInfo v-if="hover && appState.feedView!='account'" :account="toot.account" />
+                  <AccountInfo 
+                    v-if="hover && appState.feedView!='account'" 
+                    :account="toot.account" 
+                    :displayNote="false"
+                    />
                 </v-expand-transition>
               </v-card-title>
             </v-hover>
