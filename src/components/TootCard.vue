@@ -1,5 +1,5 @@
 <template>
-    <v-card 
+    <v-card dense
         :href="card.url">
         <v-card-title>
             <v-row>

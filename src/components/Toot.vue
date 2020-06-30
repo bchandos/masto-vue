@@ -1,5 +1,5 @@
 <template>
-    <v-card dense dark >
+    <v-card dense dark class="grey darken-2">
         <span class="caption font-italic pl-1">In reply to..</span>
         <v-card-title class="headline pt-1">
             <span v-html="toot.account.display_name || toot.account.username"/>
