@@ -23,10 +23,10 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider/>
-        <v-subheader v-if="userState.currentTag">
+        <v-subheader v-if="userState.currentTag && !userState.selectedTrend">
           CURRENT TAG
         </v-subheader>
-        <v-list-item v-if="userState.currentTag">
+        <v-list-item v-if="userState.currentTag && !userState.selectedTrend">
           <v-list-item-action>
             <v-icon>mdi-pound</v-icon>
           </v-list-item-action>
@@ -94,13 +94,21 @@
               :key="trend.name" 
               :value="trend.name"
               @click.native="loadTrends"
-              >
+            >
                 <v-list-item-action>
                         <v-icon>mdi-pound</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                     <v-list-item-title>{{ trend.name }}</v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-action
+                  class="mt-0 mb-0"
+                  v-if="trend.name == userState.selectedTrend && !userState.savedTags.includes(trend.name)"
+                >
+                  <v-btn icon @click="saveTag">
+                    <v-icon dense>mdi-content-save</v-icon>
+                  </v-btn>
+                </v-list-item-action>
             </v-list-item>
         </v-list-item-group>
       </v-list>
