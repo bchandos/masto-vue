@@ -47,7 +47,7 @@
           </v-list-item-action>
         </v-list-item>
         <v-divider />
-        <!-- TODO: Persistent saving of tags -->
+        <!-- TODO: (MVP) Persistent saving of tags -->
         <v-list-item v-if="userState.savedTags.length">
           <v-list-item-content>
             <v-list-item-title>
@@ -159,12 +159,14 @@ export default {
 
         saveTag: function() {
           this.userState.savedTags.push(this.userState.currentTag);
+          store.setStorage('savedTags', this.userState.savedTags);
         },
 
         deleteSavedTag: function(tag) {
           const index = this.userState.savedTags.indexOf(tag);
           if (index > -1) {
             this.userState.savedTags.splice(index, 1);
+            store.setStorage('savedTags', this.userState.savedTags);
           }
         },
 

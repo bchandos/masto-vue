@@ -132,10 +132,7 @@ export default {
               const tag = href.split('/').slice(-1)[0];
               store.getTagTimeline(tag);
             } else if (classes.contains('mention') && mentions.length) {
-              // TODO: Handle user profile navigation
               const mentionId = mentions.find(e => e.url == href).id;
-              // TODO: Figure out if this ID is universal or unique
-              //  to the mastodon server
               this.loadAccount(mentionId);
             }
           } else {

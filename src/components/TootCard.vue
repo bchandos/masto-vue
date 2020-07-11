@@ -3,7 +3,7 @@
         :href="card.url">
         <v-card-title>
             <v-row>
-            <!-- TODO: Image still looks small -->
+            <!-- TODO: (MVP) Image still looks small -->
             <v-col cols="2" align-self="center">
                 <v-img v-if="card.image" 
                 :src="card.image"

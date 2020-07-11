@@ -32,8 +32,11 @@ export const store = {
     },
 
     // TODO: Authentication
-    // TODO: Settings with secure storage (PWA) (constant load)
-    // TODO: PWA offline stuff?
+    // TODO: (MVP) Settings with secure storage (PWA) (constant load)
+    // TODO: (MVP) PWA offline stuff?
+    // TODO: (MVP) Capture first/last IDs and optimize requests
+    // TODO: (MVP) Cache some toots
+    // TODO: Toot buttons should do something...
 
     async getTagTimeline(tag, limit=this.state.settings.requestLimit) {
         this.state.appState.loading = true;
@@ -193,4 +196,14 @@ export const store = {
         this.state.appState.oldestTootInFeed = this.state.appState.currentToots.slice(-1)[0].id;
         this.state.appState.newestTootInFeed = this.state.appState.currentToots[0].id;
     },
+
+    setStorage(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    },
+
+    loadStorage() {
+        if (localStorage) {
+            this.state.userState.savedTags = JSON.parse(localStorage.getItem('savedTags')) || [];
+        }
+    }
 }

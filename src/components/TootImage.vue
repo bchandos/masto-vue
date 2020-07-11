@@ -1,6 +1,6 @@
 <template>
-    <!-- TODO: card overflow -->   
-    <!-- TODO: dynamically determine width below -->
+    <!-- TODO: (MVP) card image overflow -->   
+    <!-- TODO: (MVP) dynamically determine width below -->
     <!-- TODO: GIF/movie stop after x loops? -->
     <div>
         <div v-for="image in mediaAttachments" :key="image.id">

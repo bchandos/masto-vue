@@ -12,7 +12,6 @@
           align="center"
           justify="center"
         >
-          <!-- TODO: Move this column left and add another to the right for spotlight -->
           <TootFeed v-if="appState.primaryView == 'feed'" />
         </v-row>
       </v-container>
@@ -53,6 +52,7 @@ import Settings from './components/Settings.vue';
       store.getPublicTimeline();
       store.getTrends();
       store.pollData();
+      store.loadStorage();
       if (this.$vuetify.breakpoint.mdAndUp) {
         this.appState.navigationDrawer = true;
       }

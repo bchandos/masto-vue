@@ -60,7 +60,7 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
-          // TODO: Strip non-characters
+          // TODO: (MVP) Strip non-characters
           this.appState.feedView = 'tag';
           this.appState.currentToots = [];
           store.getTagTimeline(this.searchTag.split(' ')[0]);
