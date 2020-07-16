@@ -48,6 +48,7 @@
         </v-list-item>
         <v-divider />
         <!-- TODO: (MVP) Persistent saving of tags -->
+        <!-- TODO: Hide-able saved tags -->
         <v-list-item v-if="userState.savedTags.length">
           <v-list-item-content>
             <v-list-item-title>
@@ -80,6 +81,7 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!-- TODO: Have an overflow state for this menu? -->
         <v-list-item-group v-model="userState.selectedTrend">
             <v-list-item key="cats-debug" value="cats" @click.native="loadTrends">
               <v-list-item-action>
@@ -96,16 +98,16 @@
               @click.native="loadTrends"
             >
                 <v-list-item-action>
-                        <v-icon>mdi-pound</v-icon>
+                  <v-icon>mdi-pound</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                    <v-list-item-title>{{ trend.name }}</v-list-item-title>
+                  <v-list-item-title>{{ trend.name }}</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action
                   class="mt-0 mb-0"
                   v-if="trend.name == userState.selectedTrend && !userState.savedTags.includes(trend.name)"
                 >
-                  <v-btn icon @click="saveTag">
+                  <v-btn icon @click.stop="saveTag">
                     <v-icon dense>mdi-content-save</v-icon>
                   </v-btn>
                 </v-list-item-action>
@@ -159,14 +161,14 @@ export default {
 
         saveTag: function() {
           this.userState.savedTags.push(this.userState.currentTag);
-          store.setStorage('savedTags', this.userState.savedTags);
+          store.setStorage();
         },
 
         deleteSavedTag: function(tag) {
           const index = this.userState.savedTags.indexOf(tag);
           if (index > -1) {
             this.userState.savedTags.splice(index, 1);
-            store.setStorage('savedTags', this.userState.savedTags);
+            store.setStorage();
           }
         },
 

@@ -3,11 +3,13 @@
         :href="card.url">
         <v-card-title>
             <v-row>
-            <!-- TODO: (MVP) Image still looks small -->
+            <!-- TODO: (MVP) Card overflows on mobile -->
             <v-col cols="2" align-self="center">
-                <v-img v-if="card.image" 
-                :src="card.image"
-                class="ml-2" 
+                <v-img 
+                    v-if="card.image" 
+                    :src="card.image"
+                    class="ml-2" 
+                    aspect-ratio="1"
                 />
             </v-col>
             <v-col cols="10" class="pl-0">

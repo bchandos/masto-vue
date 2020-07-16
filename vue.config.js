@@ -23,6 +23,7 @@ module.exports = {
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/mstile-150x150.png'
     },
+    manifestOptions: {},
 
     // configure the workbox plugin
     workboxPluginMode: 'InjectManifest',
