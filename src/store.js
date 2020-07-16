@@ -187,9 +187,10 @@ export const store = {
     clearTag() {
         this.state.userState.currentTag = '';
         this.state.userState.selectedTrend = '';
-        this.state.
+        
         this.state.appState.feedView = 'public';
         this.getPublicTimeline();
+        this.setStorage();
     },
 
     firstAndLast() {
@@ -197,13 +198,14 @@ export const store = {
         this.state.appState.newestTootInFeed = this.state.appState.currentToots[0].id;
     },
 
-    setStorage(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+    setStorage() {
+        localStorage.setItem('userState', JSON.stringify(this.state.userState));
     },
 
     loadStorage() {
-        if (localStorage) {
-            this.state.userState.savedTags = JSON.parse(localStorage.getItem('savedTags')) || [];
+        let userState = JSON.parse(localStorage.getItem('userState'));
+        if (userState != null) {
+            this.state.userState = userState;
         }
     }
 }
