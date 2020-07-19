@@ -130,39 +130,48 @@ export const store = {
     },
 
     async postProcessToot() {
-        // Replace custom emoji shortcodes with the actual image in the toot contents
+        
         for (let toot of this.state.appState.currentToots) {
-            if (toot.emojis.length) {
-                let content = toot.content;
-                for (let emoji of toot.emojis) {
-                    let re = new RegExp(`:${emoji.shortcode}:`, 'g');
-                    content = content.replace(re, `<img class="emoji" src="${emoji.url}" />`)
-                }
-                toot.content = content;
-            }
-            // Do the same thing for display name
-            if (toot.account.emojis.length) {
-                let display_name = toot.account.display_name;
-                let note = toot.account.note;
-                for (let emoji of toot.account.emojis) {
-                    let re = new RegExp(`:${emoji.shortcode}:`, 'g');
-                    display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`);
-                    note = note.replace(re, `<img class="emoji" src="${emoji.url}" />`);
-                }
-                toot.account.display_name = display_name;
-                toot.account.note = note;
-            }
+            this.replaceEmojis(toot);
+            
             // If toot has a reply, fetch it and add it
             if (toot.in_reply_to_id) {
                 const response = await fetch(`${this.state.settings.BASE_URL}/statuses/${toot.in_reply_to_id}`, {
                     method: 'GET',
                 });
                 const json_response = await response.json();
+                this.replaceEmojis(json_response);
                 toot.in_reply_to = json_response;
             }
 
         }
     },
+
+    async replaceEmojis(toot) {
+        // Replace custom emoji shortcodes with the actual image in the toot contents
+        if (toot.emojis.length) {
+            let content = toot.content;
+            for (let emoji of toot.emojis) {
+                let re = new RegExp(`:${emoji.shortcode}:`, 'g');
+                content = content.replace(re, `<img class="emoji" src="${emoji.url}" />`)
+            }
+            toot.content = content;
+        }
+        // Do the same thing for display name
+        if (toot.account.emojis.length) {
+            let display_name = toot.account.display_name;
+            let note = toot.account.note;
+            for (let emoji of toot.account.emojis) {
+                let re = new RegExp(`:${emoji.shortcode}:`, 'g');
+                display_name = display_name.replace(re, `<img class="emoji" src="${emoji.url}" />`);
+                note = note.replace(re, `<img class="emoji" src="${emoji.url}" />`);
+            }
+            toot.account.display_name = display_name;
+            toot.account.note = note;
+        }
+        return toot;
+    },
+
     updateCurrentFeed() {
         if (this.state.appState.feedView=='public') {
             this.updatePublicTimeline();
