@@ -60,10 +60,10 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
-          // TODO: (MVP) Strip non-characters
           this.appState.feedView = 'tag';
           this.appState.currentToots = [];
-          store.getTagTimeline(this.searchTag.split(' ')[0]);
+          let strippedTag = this.searchTag.replace(/\W/g, '');
+          store.getTagTimeline(strippedTag);
           this.userState.selectedTrend = '';
         }
       },

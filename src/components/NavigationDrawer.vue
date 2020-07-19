@@ -47,7 +47,6 @@
           </v-list-item-action>
         </v-list-item>
         <v-divider />
-        <!-- TODO: (MVP) Persistent saving of tags -->
         <!-- TODO: Hide-able saved tags -->
         <v-list-item v-if="userState.savedTags.length">
           <v-list-item-content>
