@@ -1,7 +1,7 @@
 <template>
     <!-- TODO: animation delay on image overflow -->   
     <!-- TODO: GIF/movie stop after x loops? -->
-    <div class="container" :style="{ maxHeight : [expanded ? combinedMaxHeight + 'px' : '350px']}">
+    <div class="container" :style="{ maxHeight : [expanded ? combinedMaxHeight : '350px']}">
         <div v-for="image in mediaAttachments" :key="image.id" >
             <v-img
                 v-if="image.type!='gifv'"
@@ -59,12 +59,33 @@ export default {
     },
     computed: {
         combinedMaxHeight: function() {
+            // All of this nonsense attempts to calculate the correct height for the
+            // images as they appear on the page, so that the max-height style can be
+            // set and the CSS animation of max-height looks correct
             let mh = 0;
             for (let att of this.mediaAttachments) {
-                mh += att.meta.original.height;
-            }
-            console.log(this.$vuetify.width);
-            return mh.toString();
+                let oWidth = (att.meta.original.width >= this.$vuetify.breakpoint.width ? att.meta.original.width : this.$vuetify.breakpoint.width);
+                let aspectRatio = att.meta.original.aspect;
+                switch (this.$vuetify.breakpoint.name) {
+                    case 'xs': 
+                        mh += oWidth / aspectRatio;
+                        break;
+                    case 'sm': 
+                        mh += (oWidth * (5/6)) / aspectRatio;
+                        break;
+                    case 'md': 
+                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
+                        break;
+                    case 'lg': 
+                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
+                        break;
+                    case 'xl': 
+                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
+                        break;
+                    default: mh += att.meta.original.height;
+                }
+            } 
+            return mh.toString() + 'px';
         }
     }
 }
@@ -75,25 +96,7 @@ export default {
         overflow: hidden; 
         position: relative;
         transition-property: max-height;
-        transition-duration: 500ms;
-        transition-timing-function: linear;
-        transition-delay: 0s;
-    }
-    .unexpanded {
-        max-height: 20em; 
-        overflow: hidden; 
-        position: relative;
-        transition-property: max-height;
-        transition-duration: 500ms;
-        transition-timing-function: linear;
-        transition-delay: 0s;
-    }
-    .expanded {
-        max-height: 200em;
-        overflow: hidden; 
-        position: relative;
-        transition-property: max-height;
-        transition-duration: 500ms;
+        transition-duration: 300ms;
         transition-timing-function: linear;
         transition-delay: 0s;
     }
