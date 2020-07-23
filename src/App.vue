@@ -8,12 +8,7 @@
       <v-container
         class="fill-height"
       >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <TootFeed v-if="appState.primaryView == 'feed'" />
-        </v-row>
+        <TootFeed v-if="appState.primaryView == 'feed'" />
       </v-container>
     </v-content>
     <v-footer app>

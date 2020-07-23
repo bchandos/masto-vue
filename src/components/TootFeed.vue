@@ -1,11 +1,15 @@
 <template>
-    <v-col>
+  <v-row justify="center">
+    <v-col 
+      cols="12"
+      md="6"
+      sm= "10"
+    >
       <AccountHeader v-if="appState.feedView=='account'" />
         <div v-intersect="onIntersect" />
         <v-card 
           dense 
           dark 
-          max-width="600px"
           v-for="toot in filteredToots" 
           :key="toot.id" 
           class="grey darken-3 pa-2 ma-2 hide-overflow">
@@ -64,6 +68,7 @@
           </v-btn>
         </v-fab-transition>
     </v-col>
+  </v-row>
 </template>
 
 <script>
