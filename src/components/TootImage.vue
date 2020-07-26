@@ -1,9 +1,10 @@
 <template>
-    <!-- TODO: animation delay on image overflow -->   
+    <!-- TODO: reimagine images - perhaps photo gallery? -->   
     <!-- TODO: GIF/movie stop after x loops? -->
-    <div class="container" :style="{ maxHeight : [expanded ? combinedMaxHeight : '350px']}">
+    <div class="container" :style="{ maxHeight : [expanded ? combinedMaxHeight.toString() + 'px' : '350px']}">
         <div v-for="image in mediaAttachments" :key="image.id" >
             <v-img
+                ref="tootImages"
                 v-if="image.type!='gifv'"
                 contain
                 :src="image.url"
@@ -13,7 +14,7 @@
                 class="mt-2 mb-2"
             />
             <video 
-                v-if="image.type=='gifv'" 
+                v-if="image.type=='gifv' || image.type=='mp4'" 
                 autoplay 
                 loop 
                 muted
@@ -21,7 +22,13 @@
                 <source :src="image.url" type="video/mp4"/>
             </video>
         </div>
-        <v-btn absolute text block tile style="bottom: 0;" @click="expandOrHide"> 
+        <v-btn
+            absolute 
+            text 
+            block 
+            tile 
+            style="bottom: 0;" 
+            @click="expandOrHide"> 
             <span v-show="!expanded">
                 Show {{ mediaAttachments.length > 1 ? mediaAttachments.length - 1 : '' }} More
                 <v-icon>mdi-chevron-down</v-icon>
@@ -55,39 +62,21 @@ export default {
     methods: {
         expandOrHide: function() {
             this.expanded = !this.expanded;
-        }
+        },
     },
+
     computed: {
         combinedMaxHeight: function() {
-            // All of this nonsense attempts to calculate the correct height for the
-            // images as they appear on the page, so that the max-height style can be
-            // set and the CSS animation of max-height looks correct
+            // Calculate the correct height for the images as they appear on the page, 
+            // so that the max-height style can be set and the CSS animation of max-height looks correct
             let mh = 0;
-            for (let att of this.mediaAttachments) {
-                let oWidth = (att.meta.original.width >= this.$vuetify.breakpoint.width ? att.meta.original.width : this.$vuetify.breakpoint.width);
-                let aspectRatio = att.meta.original.aspect;
-                switch (this.$vuetify.breakpoint.name) {
-                    case 'xs': 
-                        mh += oWidth / aspectRatio;
-                        break;
-                    case 'sm': 
-                        mh += (oWidth * (5/6)) / aspectRatio;
-                        break;
-                    case 'md': 
-                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
-                        break;
-                    case 'lg': 
-                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
-                        break;
-                    case 'xl': 
-                        mh += ((oWidth - 256) * 0.5) / aspectRatio;
-                        break;
-                    default: mh += att.meta.original.height;
-                }
-            } 
-            return mh.toString() + 'px';
-        }
-    }
+            for (let att of this.$refs.tootImages) {
+                mh += att.$el.clientHeight;
+            }
+            return mh;
+        },
+        
+    },
 }
 </script>
 
