@@ -1,44 +1,150 @@
 <template>
     <!-- TODO: reimagine images - perhaps photo gallery? -->   
     <!-- TODO: GIF/movie stop after x loops? -->
-    <div class="container" :style="{ maxHeight : [expanded ? combinedMaxHeight.toString() + 'px' : '350px']}">
-        <div v-for="image in mediaAttachments" :key="image.id" >
-            <v-img
-                ref="tootImages"
-                v-if="image.type!='gifv'"
-                contain
-                :src="image.url"
-                :lazy-src="image.preview_url"
-                :alt="image.description"
-                :aspect-ratio="image.aspect"
-                class="mt-2 mb-2"
-            />
-            <video 
-                v-if="image.type=='gifv' || image.type=='mp4'" 
-                autoplay 
-                loop 
-                muted
-            >
-                <source :src="image.url" type="video/mp4"/>
-            </video>
-        </div>
-        <v-btn
-            absolute 
-            text 
-            block 
-            tile 
-            style="bottom: 0;" 
-            @click="expandOrHide"> 
-            <span v-show="!expanded">
-                Show {{ mediaAttachments.length > 1 ? mediaAttachments.length - 1 : '' }} More
-                <v-icon>mdi-chevron-down</v-icon>
-            </span>
-            <span v-show="expanded">
-                Show Less
-                <v-icon>mdi-chevron-up</v-icon>
-            </span>
-        </v-btn>
-    </div>
+    <v-container class="rounded">
+        <template v-if="numOfImages==1">
+            <v-row class="mt-2 mb-2">
+                <v-col>
+                    <v-img
+                        v-if="mediaAttachments[0].type!='gifv'"
+                        :src="mediaAttachments[0].url"
+                        :lazy-src="mediaAttachments[0].preview_url"
+                        :alt="mediaAttachments[0].description"
+                        :aspect-ratio="mediaAttachments[0].aspect"
+                        height="400px"
+                    />
+                    <video 
+                        v-if="mediaAttachments[0].type=='gifv' || mediaAttachments[0].type=='mp4'" 
+                        controls
+                        loop 
+                        muted
+                        width="100%"
+                        height="auto"
+                    >
+                        <source :src="mediaAttachments[0].url" type="video/mp4"/>
+                    </video>
+                </v-col>
+            </v-row>
+        </template>
+        <template v-if="numOfImages==2">
+            <v-row class="mt-2 mb-2">
+                <v-col v-for="image in mediaAttachments" :key="image.id" cols=6 class="pa-0">
+                    <v-img
+                        v-if="image.type!='gifv'"
+                        
+                        :src="image.url"
+                        :lazy-src="image.preview_url"
+                        :alt="image.description"
+                        :aspect-ratio="image.aspect"
+                        height="400px"
+                    />
+                </v-col>
+            </v-row>
+        </template>
+        <template v-if="numOfImages==3">
+            <v-row class="mt-2 mb-2">
+                <v-col cols=6 class="pa-0 rounded">
+                    <v-img
+                        v-if="mediaAttachments[0].type!='gifv'"
+
+                        :src="mediaAttachments[0].url"
+                        :lazy-src="mediaAttachments[0].preview_url"
+                        :alt="mediaAttachments[0].description"
+                        :aspect-ratio="mediaAttachments[0].aspect"
+                        height="400px"
+                    />
+                </v-col>
+                <v-col cols=6 class="pa-0">
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[1].type!='gifv'"
+                                
+                                :src="mediaAttachments[1].url"
+                                :lazy-src="mediaAttachments[1].preview_url"
+                                :alt="mediaAttachments[1].description"
+                                :aspect-ratio="mediaAttachments[1].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[2].type!='gifv'"
+                                
+                                :src="mediaAttachments[2].url"
+                                :lazy-src="mediaAttachments[2].preview_url"
+                                :alt="mediaAttachments[2].description"
+                                :aspect-ratio="mediaAttachments[2].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </template>
+        <template v-if="numOfImages==4">
+            <v-row class="mt-2 mb-2">
+                <v-col cols=6 class="pa-0">
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[0].type!='gifv'"
+                                
+                                :src="mediaAttachments[0].url"
+                                :lazy-src="mediaAttachments[0].preview_url"
+                                :alt="mediaAttachments[0].description"
+                                :aspect-ratio="mediaAttachments[0].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[1].type!='gifv'"
+                                
+                                :src="mediaAttachments[1].url"
+                                :lazy-src="mediaAttachments[1].preview_url"
+                                :alt="mediaAttachments[1].description"
+                                :aspect-ratio="mediaAttachments[1].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols=6 class="pa-0">
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[2].type!='gifv'"
+                                
+                                :src="mediaAttachments[2].url"
+                                :lazy-src="mediaAttachments[2].preview_url"
+                                :alt="mediaAttachments[2].description"
+                                :aspect-ratio="mediaAttachments[2].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="pa-0">
+                            <v-img
+                                v-if="mediaAttachments[3].type!='gifv'"
+                                
+                                :src="mediaAttachments[3].url"
+                                :lazy-src="mediaAttachments[3].preview_url"
+                                :alt="mediaAttachments[3].description"
+                                :aspect-ratio="mediaAttachments[3].aspect"
+                                height="200px"
+                            />
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </template>
+    </v-container>
 </template>
 
 <script>
@@ -66,16 +172,9 @@ export default {
     },
 
     computed: {
-        combinedMaxHeight: function() {
-            // Calculate the correct height for the images as they appear on the page, 
-            // so that the max-height style can be set and the CSS animation of max-height looks correct
-            let mh = 0;
-            for (let att of this.$refs.tootImages) {
-                mh += att.$el.clientHeight;
-            }
-            return mh;
-        },
-        
+        numOfImages: function() {
+            return this.mediaAttachments.length;
+        }
     },
 }
 </script>
