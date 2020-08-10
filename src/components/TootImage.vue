@@ -1,7 +1,7 @@
 <template>
     <!-- TODO: reimagine images - perhaps photo gallery? -->   
     <!-- TODO: GIF/movie stop after x loops? -->
-    <v-container class="rounded">
+    <v-container>
         <template v-if="numOfImages==1">
             <v-row class="mt-2 mb-2">
                 <v-col>
@@ -12,6 +12,7 @@
                         :alt="mediaAttachments[0].description"
                         :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
+                        class="all-round"
                     />
                     <video 
                         v-if="mediaAttachments[0].type=='gifv' || mediaAttachments[0].type=='mp4'" 
@@ -28,30 +29,41 @@
         </template>
         <template v-if="numOfImages==2">
             <v-row class="mt-2 mb-2">
-                <v-col v-for="image in mediaAttachments" :key="image.id" cols=6 class="pa-0">
+                <v-col cols=6 class="pa-0">
                     <v-img
-                        v-if="image.type!='gifv'"
-                        
-                        :src="image.url"
-                        :lazy-src="image.preview_url"
-                        :alt="image.description"
-                        :aspect-ratio="image.aspect"
+                        v-if="mediaAttachments[0].type!='gifv'"
+                        :src="mediaAttachments[0].url"
+                        :lazy-src="mediaAttachments[0].preview_url"
+                        :alt="mediaAttachments[0].description"
+                        :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
+                        class="top-left-round bottom-left-round"
+                    />
+                </v-col>
+                <v-col cols=6 class="pa-0">
+                    <v-img
+                        v-if="mediaAttachments[1].type!='gifv'"
+                        :src="mediaAttachments[1].url"
+                        :lazy-src="mediaAttachments[1].preview_url"
+                        :alt="mediaAttachments[1].description"
+                        :aspect-ratio="mediaAttachments[1].aspect"
+                        height="400px"
+                        class="top-right-round bottom-right-round"
                     />
                 </v-col>
             </v-row>
         </template>
         <template v-if="numOfImages==3">
             <v-row class="mt-2 mb-2">
-                <v-col cols=6 class="pa-0 rounded">
+                <v-col cols=6 class="pa-0">
                     <v-img
                         v-if="mediaAttachments[0].type!='gifv'"
-
                         :src="mediaAttachments[0].url"
                         :lazy-src="mediaAttachments[0].preview_url"
                         :alt="mediaAttachments[0].description"
                         :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
+                        class="top-left-round bottom-left-round"
                     />
                 </v-col>
                 <v-col cols=6 class="pa-0">
@@ -59,12 +71,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[1].type!='gifv'"
-                                
                                 :src="mediaAttachments[1].url"
                                 :lazy-src="mediaAttachments[1].preview_url"
                                 :alt="mediaAttachments[1].description"
                                 :aspect-ratio="mediaAttachments[1].aspect"
                                 height="200px"
+                                class="top-right-round"
                             />
                         </v-col>
                     </v-row>
@@ -72,12 +84,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[2].type!='gifv'"
-                                
                                 :src="mediaAttachments[2].url"
                                 :lazy-src="mediaAttachments[2].preview_url"
                                 :alt="mediaAttachments[2].description"
                                 :aspect-ratio="mediaAttachments[2].aspect"
                                 height="200px"
+                                class="bottom-right-round"
                             />
                         </v-col>
                     </v-row>
@@ -91,12 +103,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[0].type!='gifv'"
-                                
                                 :src="mediaAttachments[0].url"
                                 :lazy-src="mediaAttachments[0].preview_url"
                                 :alt="mediaAttachments[0].description"
                                 :aspect-ratio="mediaAttachments[0].aspect"
                                 height="200px"
+                                class="top-left-round"
                             />
                         </v-col>
                     </v-row>
@@ -104,12 +116,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[1].type!='gifv'"
-                                
                                 :src="mediaAttachments[1].url"
                                 :lazy-src="mediaAttachments[1].preview_url"
                                 :alt="mediaAttachments[1].description"
                                 :aspect-ratio="mediaAttachments[1].aspect"
                                 height="200px"
+                                class="bottom-left-round"
                             />
                         </v-col>
                     </v-row>
@@ -119,12 +131,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[2].type!='gifv'"
-                                
                                 :src="mediaAttachments[2].url"
                                 :lazy-src="mediaAttachments[2].preview_url"
                                 :alt="mediaAttachments[2].description"
                                 :aspect-ratio="mediaAttachments[2].aspect"
                                 height="200px"
+                                class="top-right-round"
                             />
                         </v-col>
                     </v-row>
@@ -132,12 +144,12 @@
                         <v-col class="pa-0">
                             <v-img
                                 v-if="mediaAttachments[3].type!='gifv'"
-                                
                                 :src="mediaAttachments[3].url"
                                 :lazy-src="mediaAttachments[3].preview_url"
                                 :alt="mediaAttachments[3].description"
                                 :aspect-ratio="mediaAttachments[3].aspect"
                                 height="200px"
+                                class="bottom-right-round"
                             />
                         </v-col>
                     </v-row>
@@ -188,4 +200,21 @@ export default {
         transition-timing-function: linear;
         transition-delay: 0s;
     }
+    .all-round {
+        border-radius: 12px;
+    }
+    .top-left-round {
+        border-top-left-radius: 12px;
+    }
+    .top-right-round {
+        border-top-right-radius: 12px;
+    }
+    .bottom-left-round {
+        border-bottom-left-radius: 12px;
+    }
+    .bottom-right-round {
+        border-bottom-right-radius: 12px;
+    }
+
+
 </style>
