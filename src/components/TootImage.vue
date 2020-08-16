@@ -13,6 +13,7 @@
                         :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
                         class="all-round"
+                        @click="openGallery(0)"
                     />
                     <video 
                         v-if="mediaAttachments[0].type=='gifv' || mediaAttachments[0].type=='mp4'" 
@@ -38,6 +39,7 @@
                         :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
                         class="top-left-round bottom-left-round"
+                        @click="openGallery(0)"
                     />
                 </v-col>
                 <v-col cols=6 class="pa-0">
@@ -49,6 +51,7 @@
                         :aspect-ratio="mediaAttachments[1].aspect"
                         height="400px"
                         class="top-right-round bottom-right-round"
+                        @click="openGallery(1)"
                     />
                 </v-col>
             </v-row>
@@ -64,6 +67,7 @@
                         :aspect-ratio="mediaAttachments[0].aspect"
                         height="400px"
                         class="top-left-round bottom-left-round"
+                        @click="openGallery(0)"
                     />
                 </v-col>
                 <v-col cols=6 class="pa-0">
@@ -77,6 +81,7 @@
                                 :aspect-ratio="mediaAttachments[1].aspect"
                                 height="200px"
                                 class="top-right-round"
+                                @click="openGallery(1)"
                             />
                         </v-col>
                     </v-row>
@@ -90,6 +95,7 @@
                                 :aspect-ratio="mediaAttachments[2].aspect"
                                 height="200px"
                                 class="bottom-right-round"
+                                @click="openGallery(2)"
                             />
                         </v-col>
                     </v-row>
@@ -109,6 +115,7 @@
                                 :aspect-ratio="mediaAttachments[0].aspect"
                                 height="200px"
                                 class="top-left-round"
+                                @click="openGallery(0)"
                             />
                         </v-col>
                     </v-row>
@@ -122,6 +129,7 @@
                                 :aspect-ratio="mediaAttachments[1].aspect"
                                 height="200px"
                                 class="bottom-left-round"
+                                @click="openGallery(1)"
                             />
                         </v-col>
                     </v-row>
@@ -137,6 +145,7 @@
                                 :aspect-ratio="mediaAttachments[2].aspect"
                                 height="200px"
                                 class="top-right-round"
+                                @click="openGallery(2)"
                             />
                         </v-col>
                     </v-row>
@@ -150,6 +159,7 @@
                                 :aspect-ratio="mediaAttachments[3].aspect"
                                 height="200px"
                                 class="bottom-right-round"
+                                @click="openGallery(3)"
                             />
                         </v-col>
                     </v-row>
@@ -162,8 +172,10 @@
 <script>
 import { store } from "../store.js";
 
+
 export default {
     components: {
+
     },
     props: {
         mediaAttachments: {
@@ -181,6 +193,11 @@ export default {
         expandOrHide: function() {
             this.expanded = !this.expanded;
         },
+        openGallery: function(idx) {
+            this.appState.galleryDialog = true;
+            this.appState.galleryAttachments = this.mediaAttachments;
+            this.appState.galleryIndex = idx;
+        }
     },
 
     computed: {

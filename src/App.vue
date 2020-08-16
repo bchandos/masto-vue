@@ -9,6 +9,7 @@
       <v-container
         class="fill-height"
       >
+        <Gallery />
         <TootFeed v-if="appState.primaryView == 'feed'" />
       </v-container>
     </v-content>
@@ -25,6 +26,7 @@ import TootFeed from "./components/TootFeed.vue";
 import NavigationDrawer from './components/NavigationDrawer.vue';
 import AppBar from './components/AppBar.vue';
 import Settings from './components/Settings.vue';
+import Gallery from "./components/Gallery";
 
   export default {
     components: {
@@ -32,6 +34,7 @@ import Settings from './components/Settings.vue';
       NavigationDrawer,
       AppBar,
       Settings,
+      Gallery,
     },
     props: {
       source: String,

@@ -22,6 +22,9 @@ export const store = {
             oldestTootInFeed: '',
             newestTootInFeed: '',
             loggedIn: false,
+            galleryDialog: false,
+            galleryAttachments: [],
+            galleryIndex: 0,
         },
         settings: {
             BASE_URL: 'https://mastodon.social/api/v1',
