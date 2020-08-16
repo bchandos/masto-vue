@@ -7,8 +7,8 @@
     >
       <AccountHeader v-if="appState.feedView=='account'" />
         <div v-intersect="onIntersect" />
-        <v-card dense dark v-if="filteredToots.length==0">
-          <v-card-content>No toots to display. Adjust app filters or remove trends.</v-card-content>
+        <v-card dense dark v-if="!appState.loading && filteredToots.length==0">
+          <v-card-text>No toots to display. Adjust app filters or remove trends.</v-card-text>
         </v-card>
         <v-card 
           dense 
