@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire">
     <Settings v-if="appState.settingsDialog" />
-    <NavigationDrawer />
-    <AppBar />
+    <NavigationDrawer :class="{blurred: appState.galleryDialog}"/>
+    <AppBar :class="{blurred: appState.galleryDialog}"/>
     <!-- TODO: Add toast notification system (copy from budget planner?) -->
     <!-- TODO: Add routing -->
     <v-content>
@@ -10,10 +10,10 @@
         class="fill-height"
       >
         <Gallery />
-        <TootFeed v-if="appState.primaryView == 'feed'" />
+        <TootFeed v-if="appState.primaryView == 'feed'" :class="{blurred: appState.galleryDialog}" />
       </v-container>
     </v-content>
-    <v-footer app>
+    <v-footer app :class="{blurred: appState.galleryDialog}">
       <v-spacer />
       <span>&copy; 2020 <a href="https://billchandos.dev">billchandos.dev</a></span>
     </v-footer>
@@ -67,5 +67,8 @@ import Gallery from "./components/Gallery";
   }
   .avatar {
     border-radius: 50%;
+  }
+  .blurred {
+    filter: blur(2px);
   }
 </style>

@@ -1,10 +1,13 @@
 <template>
+<!-- TODO: Fix button placement or figure out width -->
     <v-dialog
         v-model="appState.galleryDialog"
-        fullscreen
+        @click:outside="closeGallery"
+        @keydown.esc="closeGallery"
     >
         <v-img
-            max-height="100%"
+            contain
+            max-height="90vh"
             v-if="appState.galleryAttachments.length"
             :src="appState.galleryAttachments[appState.galleryIndex].url"
             :lazy-src="appState.galleryAttachments[appState.galleryIndex].preview_url"
@@ -12,13 +15,33 @@
             :aspect-ratio="appState.galleryAttachments[appState.galleryIndex].aspect"
         />
         <v-content class="pa-0 ma-0">
-            <v-btn @click="closeGallery" fixed top left rounded small outlined>
+            <v-btn 
+                @click="closeGallery" 
+                fixed 
+                top 
+                left 
+                rounded 
+                small 
+                outlined
+            >
                 <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-btn v-if="appState.galleryAttachments.length > 1" @click="navigateGallery(-1)" fixed left outlined style="bottom: 50%;">
+            <v-btn 
+            v-if="appState.galleryAttachments.length > 1" 
+                @click="navigateGallery(-1)" 
+                fixed 
+                left 
+                outlined
+            >
                 <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
-            <v-btn v-if="appState.galleryAttachments.length > 1" @click="navigateGallery(1)" fixed right outlined style="bottom: 50%;">
+            <v-btn 
+                v-if="appState.galleryAttachments.length > 1" 
+                @click="navigateGallery(1)" 
+                fixed 
+                right 
+                outlined
+            >
                 <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
         </v-content>
@@ -40,6 +63,7 @@ export default {
         closeGallery: function() {
             this.appState.galleryDialog = false;
             this.appState.galleryAttachments = [];
+            this.appState.galleryIndex = 0;
         },
         navigateGallery: function(increment) {
             let newIndex = this.appState.galleryIndex + increment;
