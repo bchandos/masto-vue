@@ -4,6 +4,7 @@
     <NavigationDrawer />
     <AppBar />
     <!-- TODO: Add toast notification system (copy from budget planner?) -->
+    <!-- TODO: Add routing -->
     <v-content>
       <v-container
         class="fill-height"

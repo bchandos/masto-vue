@@ -37,6 +37,10 @@ export const store = {
     // TODO: (MVP) Capture first/last IDs and optimize requests
     // TODO: (MVP) Cache some toots
     // TODO: Toot buttons should do something...
+    // TODO: Use/set local instance only (i.e. no fediverse)
+    // TODO: Can filters be done server side?
+    // TODO: View toots in context; https://mastodon.example/api/v1/statuses/:id/context ("ancestors", "descendants")
+    // TODO: Streaming? https://docs.joinmastodon.org/methods/timelines/streaming/
 
     async getTagTimeline(tag, limit=this.state.settings.requestLimit) {
         this.state.appState.loading = true;
