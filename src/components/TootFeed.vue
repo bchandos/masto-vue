@@ -7,6 +7,9 @@
     >
       <AccountHeader v-if="appState.feedView=='account'" />
         <div v-intersect="onIntersect" />
+        <v-card dense dark v-if="filteredToots.length==0">
+          <v-card-content>No toots to display. Adjust app filters or remove trends.</v-card-content>
+        </v-card>
         <v-card 
           dense 
           dark 
@@ -48,11 +51,11 @@
               :mediaAttachments="toot.media_attachments" 
             />
           <v-card-actions>
-            <v-btn icon><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
+            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
             <v-spacer/>
-            <v-btn icon><v-icon>mdi-repeat</v-icon></v-btn> {{ toot.reblogs_count }}
+            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-repeat</v-icon></v-btn> {{ toot.reblogs_count }}
             <v-spacer />
-            <v-btn icon><v-icon>mdi-heart-outline</v-icon></v-btn> {{ toot.favourites_count }}
+            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-heart-outline</v-icon></v-btn> {{ toot.favourites_count }}
             <v-spacer/>
           </v-card-actions>
         </v-card>

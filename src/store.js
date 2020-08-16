@@ -21,6 +21,7 @@ export const store = {
             isIntersecting: true,
             oldestTootInFeed: '',
             newestTootInFeed: '',
+            loggedIn: false,
         },
         settings: {
             BASE_URL: 'https://mastodon.social/api/v1',
