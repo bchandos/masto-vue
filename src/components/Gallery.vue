@@ -4,6 +4,8 @@
         v-model="appState.galleryDialog"
         @click:outside="closeGallery"
         @keydown.esc="closeGallery"
+        @keydown.arrow-left="navigateGallery(-1)"
+        @keydown.arrow-right="navigateGallery(1)"
     >
         <v-img
             contain
@@ -74,8 +76,7 @@ export default {
             } else {
                 this.appState.galleryIndex = newIndex;
             }
-
-        }
+        },
     },
 }
 </script>
