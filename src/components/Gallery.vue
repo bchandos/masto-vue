@@ -15,7 +15,13 @@
             :lazy-src="appState.galleryAttachments[appState.galleryIndex].preview_url"
             :alt="appState.galleryAttachments[appState.galleryIndex].description"
             :aspect-ratio="appState.galleryAttachments[appState.galleryIndex].aspect"
-        />
+        >
+            <v-row v-if="appState.galleryAttachments.length > 1" align="end" class="lightbox white--text pa-2 fill-height">
+                <v-col class="text-center">
+                    {{ appState.galleryIndex + 1 }} of {{ appState.galleryAttachments.length }}
+                </v-col>
+            </v-row>
+        </v-img>
         <v-content class="pa-0 ma-0">
             <v-btn 
                 @click="closeGallery" 
@@ -29,7 +35,7 @@
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-btn 
-            v-if="appState.galleryAttachments.length > 1" 
+                v-if="appState.galleryAttachments.length > 1" 
                 @click="navigateGallery(-1)" 
                 fixed 
                 left 
