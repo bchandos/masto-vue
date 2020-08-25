@@ -39,7 +39,6 @@ export const store = {
     // TODO: (MVP) Settings with secure storage (PWA) (constant load)
     // TODO: (MVP) PWA offline stuff?
     // TODO: (MVP) Capture first/last IDs and optimize requests
-    // TODO: (MVP) Cache some toots
     // TODO: Toot buttons should do something...
     // TODO: Use/set local instance only (i.e. no fediverse)
     // TODO: Can filters be done server side?
@@ -47,6 +46,9 @@ export const store = {
     // TODO: Streaming? https://docs.joinmastodon.org/methods/timelines/streaming/
 
     async getTagTimeline(tag, limit=this.state.settings.requestLimit) {
+        if (this.state.appState.feedView == 'public') {
+            this.cacheToots();
+        }
         this.state.appState.loading = true;
         this.state.userState.currentTag = tag;
         this.state.appState.feedView = 'tag';
@@ -72,18 +74,27 @@ export const store = {
     },
 
     async getPublicTimeline(limit=this.state.settings.requestLimit) {
-        this.state.appState.loading = true;
-        this.state.appState.feedView = 'public';
-        this.state.userState.currentTag = '';
-        this.state.userState.selectedTrend = '';
-        const response = await fetch(`${this.state.settings.BASE_URL}/timelines/public?limit=${limit}`, {
-            method: 'GET',
-        });
-        const json_response = await response.json();
-        this.state.appState.currentToots = json_response;
-        this.postProcessToot();
-        this.state.appState.loading = false;
-        this.firstAndLast();
+        if (this.getCachedToots().length) {
+            // We have cached toots, use them instead of requesting new ones
+            this.state.appState.currentToots = JSON.parse(localStorage.getItem('publicTimeline'));
+            this.clearCachedToots();
+            this.state.appState.feedView = 'public';
+            this.state.userState.currentTag = '';
+            this.state.userState.selectedTrend = '';
+        } else {
+            this.state.appState.loading = true;
+            this.state.appState.feedView = 'public';
+            this.state.userState.currentTag = '';
+            this.state.userState.selectedTrend = '';
+            const response = await fetch(`${this.state.settings.BASE_URL}/timelines/public?limit=${limit}`, {
+                method: 'GET',
+            });
+            const json_response = await response.json();
+            this.state.appState.currentToots = json_response;
+            this.postProcessToot();
+            this.state.appState.loading = false;
+            this.firstAndLast();
+        }
     },
     
     async updatePublicTimeline(limit=this.state.settings.requestLimit) {
@@ -99,6 +110,9 @@ export const store = {
     },
 
     async getUserTimeline(account_id, limit=this.state.settings.requestLimit) {
+        if (this.state.appState.feedView == 'public') {
+            this.cacheToots();
+        }
         this.state.appState.loading = true;
         this.state.appState.feedView = 'account';
         this.state.userState.currentTag = '';
@@ -138,7 +152,6 @@ export const store = {
     },
 
     async postProcessToot() {
-        
         for (let toot of this.state.appState.currentToots) {
             this.replaceEmojis(toot);
             
@@ -224,5 +237,22 @@ export const store = {
         if (userState != null) {
             this.state.userState = userState;
         }
+    },
+
+    cacheToots() {
+        localStorage.setItem('publicTimeline', JSON.stringify(this.state.appState.currentToots));
+    },
+
+    getCachedToots() {
+        let cachedToots = JSON.parse(localStorage.getItem('publicTimeline'));
+        if (cachedToots != null) {
+            return JSON.parse(localStorage.getItem('publicTimeline'));
+        } else {
+            return [];
+        }
+    },
+
+    clearCachedToots() {
+        localStorage.removeItem('publicTimeline');
     }
 }

@@ -15,6 +15,10 @@
             :lazy-src="appState.galleryAttachments[appState.galleryIndex].preview_url"
             :alt="appState.galleryAttachments[appState.galleryIndex].description"
             :aspect-ratio="appState.galleryAttachments[appState.galleryIndex].aspect"
+            v-touch="{
+                left: () => navigateGallery(1),
+                right: () => navigateGallery(-1)
+            }"
         >
             <v-row v-if="appState.galleryAttachments.length > 1" align="end" class="lightbox white--text pa-2 fill-height">
                 <v-col class="text-center">

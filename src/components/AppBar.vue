@@ -60,10 +60,10 @@ import { store } from "../store.js";
     methods: {
       searchForTag: function() {
         if (this.searchTag) {
-          this.appState.feedView = 'tag';
-          this.appState.currentToots = [];
           let strippedTag = this.searchTag.replace(/\W/g, '');
           store.getTagTimeline(strippedTag);
+          this.appState.feedView = 'tag';
+          this.appState.currentToots = [];
           this.userState.selectedTrend = '';
         }
       },
