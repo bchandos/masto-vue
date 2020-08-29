@@ -81,6 +81,7 @@ import { store } from "../store.js";
       },
 
       resetApp: function() {
+        this.searchTag = '';
         this.userState.selectedTrend = '';
         this.appState.feedView = 'public';
         this.appState.currentToots = [];
