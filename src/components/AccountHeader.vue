@@ -1,6 +1,6 @@
 <template>
     <!-- TODO: Make this card float at the top... -->
-    <v-card>
+    <v-card v-if="userState.currentAccount">
         <v-card-title class="headline">
             <v-img 
                 :src="userState.currentAccount.avatar" 

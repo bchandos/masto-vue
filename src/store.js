@@ -1,3 +1,5 @@
+import { del, get, set } from "idb-keyval";
+
 export const store = {
     state: {
         // TODO: Build out architecture for full app
@@ -74,9 +76,10 @@ export const store = {
     },
 
     async getPublicTimeline(limit=this.state.settings.requestLimit) {
-        if (this.getCachedToots().length) {
+        const cachedToots = await this.getCachedToots();
+        if (cachedToots.length) {
             // We have cached toots, use them instead of requesting new ones
-            this.state.appState.currentToots = JSON.parse(localStorage.getItem('publicTimeline'));
+            this.state.appState.currentToots = cachedToots;
             this.clearCachedToots();
             this.state.appState.feedView = 'public';
             this.state.userState.currentTag = '';
@@ -229,30 +232,36 @@ export const store = {
     },
 
     setStorage() {
-        localStorage.setItem('userState', JSON.stringify(this.state.userState));
+        set('userState', this.state.userState);
+        // localStorage.setItem('userState', JSON.stringify(this.state.userState));
     },
 
-    loadStorage() {
-        let userState = JSON.parse(localStorage.getItem('userState'));
+    async loadStorage() {
+        // let userState = JSON.parse(localStorage.getItem('userState'));
+        const userState = await get('userState');
         if (userState != null) {
             this.state.userState = userState;
         }
     },
 
     cacheToots() {
-        localStorage.setItem('publicTimeline', JSON.stringify(this.state.appState.currentToots));
+        set('publicTimeline', this.state.appState.currentToots);
+        // localStorage.setItem('publicTimeline', JSON.stringify(this.state.appState.currentToots));
     },
 
-    getCachedToots() {
-        let cachedToots = JSON.parse(localStorage.getItem('publicTimeline'));
-        if (cachedToots != null) {
-            return JSON.parse(localStorage.getItem('publicTimeline'));
-        } else {
-            return [];
-        }
+    async getCachedToots() {
+        // let cachedToots = JSON.parse(localStorage.getItem('publicTimeline'));
+        const cachedToots = await get('publicTimeline');
+        return cachedToots || [];
+        // if (cachedToots != null) {
+        //     return cachedToots;
+        // } else {
+        //     return [];
+        // }
     },
 
     clearCachedToots() {
-        localStorage.removeItem('publicTimeline');
+        del('publicTimeline');
+        // localStorage.removeItem('publicTimeline');
     }
 }

@@ -6,70 +6,70 @@
       sm= "10"
     >
       <AccountHeader v-if="appState.feedView=='account'" />
-        <div v-intersect="onIntersect" />
-        <v-card dense dark v-if="!appState.loading && filteredToots.length==0">
-          <v-card-text>No toots to display. Adjust app filters or remove trends.</v-card-text>
-        </v-card>
-        <v-card 
-          dense 
-          dark 
-          v-for="toot in filteredToots" 
-          :key="toot.id" 
-          class="grey darken-3 pa-2 ma-2 hide-overflow">
-            <v-hover v-slot:default="{ hover }">
-              <v-card-title class="headline">
-                <v-img 
-                  :src="toot.account.avatar" 
-                  :lazy-src="settings.lazyAvatarUrl"
-                  class="avatar ma-2"
-                  max-height="2rem" 
-                  max-width="2rem"
-                  @click="loadAccount(toot.account.id)"
+      <div v-intersect="onIntersect" />
+      <v-card dense dark v-if="!appState.loading && filteredToots.length==0">
+        <v-card-text>No toots to display. Adjust app filters or remove trends.</v-card-text>
+      </v-card>
+      <v-card 
+        dense 
+        dark 
+        v-for="toot in filteredToots" 
+        :key="toot.id" 
+        class="grey darken-3 pa-2 ma-2 hide-overflow">
+          <v-hover v-slot:default="{ hover }">
+            <v-card-title class="headline">
+              <v-img 
+                :src="toot.account.avatar" 
+                :lazy-src="settings.lazyAvatarUrl"
+                class="avatar ma-2"
+                max-height="2rem" 
+                max-width="2rem"
+                @click="loadAccount(toot.account.id)"
+                />
+              <span v-html="toot.account.display_name || toot.account.username"/>
+              <v-expand-transition>
+                <AccountInfo 
+                  v-if="hover && appState.feedView!='account'" 
+                  :account="toot.account" 
+                  :displayNote="false"
                   />
-                <span v-html="toot.account.display_name || toot.account.username"/>
-                <v-expand-transition>
-                  <AccountInfo 
-                    v-if="hover && appState.feedView!='account'" 
-                    :account="toot.account" 
-                    :displayNote="false"
-                    />
-                </v-expand-transition>
-              </v-card-title>
-            </v-hover>
-            <v-card-subtitle class="overline pl-7">
-              {{ toot.created_at | formatDate }} <span class="ma-3">|</span> {{ toot.account.acct }}
-            </v-card-subtitle>
-            <Toot v-if="toot.hasOwnProperty('in_reply_to')" :toot="toot.in_reply_to" />
-            <v-card-text 
-              v-html="toot.content" 
-              @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
-              />
-            <TootCard v-if="toot.card" :card="toot.card" />
-           
-            <TootImage 
-              v-if="toot.media_attachments.length"
-              :mediaAttachments="toot.media_attachments" 
+              </v-expand-transition>
+            </v-card-title>
+          </v-hover>
+          <v-card-subtitle class="overline pl-7">
+            {{ toot.created_at | formatDate }} <span class="ma-3">|</span> {{ toot.account.acct }}
+          </v-card-subtitle>
+          <Toot v-if="toot.hasOwnProperty('in_reply_to')" :toot="toot.in_reply_to" />
+          <v-card-text 
+            v-html="toot.content" 
+            @click.prevent="captureClick(toot.mentions, toot.tags, $event)"
             />
-          <v-card-actions>
-            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
-            <v-spacer/>
-            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-repeat</v-icon></v-btn> {{ toot.reblogs_count }}
-            <v-spacer />
-            <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-heart-outline</v-icon></v-btn> {{ toot.favourites_count }}
-            <v-spacer/>
-          </v-card-actions>
-        </v-card>
-        <v-fab-transition>
-          <v-btn
-            v-show="!appState.isIntersecting"
-            fab
-            fixed
-            bottom
-            @click="$vuetify.goTo(0)"
-          >
-            <v-icon color="light-blue">mdi-chevron-up</v-icon>
-          </v-btn>
-        </v-fab-transition>
+          <TootCard v-if="toot.card" :card="toot.card" />
+          
+          <TootImage 
+            v-if="toot.media_attachments.length"
+            :mediaAttachments="toot.media_attachments" 
+          />
+        <v-card-actions>
+          <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-comment-outline</v-icon></v-btn> {{ toot.replies_count }}
+          <v-spacer/>
+          <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-repeat</v-icon></v-btn> {{ toot.reblogs_count }}
+          <v-spacer />
+          <v-btn icon :disabled="!appState.loggedIn"><v-icon>mdi-heart-outline</v-icon></v-btn> {{ toot.favourites_count }}
+          <v-spacer/>
+        </v-card-actions>
+      </v-card>
+      <v-fab-transition>
+        <v-btn
+          v-show="!appState.isIntersecting"
+          fab
+          fixed
+          bottom
+          @click="$vuetify.goTo(0)"
+        >
+          <v-icon color="light-blue">mdi-chevron-up</v-icon>
+        </v-btn>
+      </v-fab-transition>
     </v-col>
   </v-row>
 </template>
@@ -151,7 +151,6 @@ export default {
       },
 
       loadAccount: function(id) {
-        this.appState.feedView = 'account';
         store.getUserTimeline(id);
       },
 
