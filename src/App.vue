@@ -5,17 +5,17 @@
     <AppBar :class="{blurred: appState.galleryDialog}"/>
     <!-- TODO: Add toast notification system (copy from budget planner?) -->
     <!-- TODO: Add routing -->
-    <v-content>
+    <v-main>
       <v-container
         class="fill-height"
       >
         <Gallery />
         <TootFeed v-if="appState.primaryView == 'feed'" :class="{blurred: appState.galleryDialog}" />
       </v-container>
-    </v-content>
+    </v-main>
     <v-footer app :class="{blurred: appState.galleryDialog}">
       <v-spacer />
-      <span>&copy; 2020 <a href="https://billchandos.dev">billchandos.dev</a></span>
+      <span>&copy; 2020-22 <a href="https://billchandos.dev">billchandos.dev</a></span>
     </v-footer>
   </v-app>
 </template>
