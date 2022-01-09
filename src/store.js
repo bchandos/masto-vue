@@ -29,11 +29,12 @@ export const store = {
             galleryIndex: 0,
         },
         settings: {
-            BASE_URL: 'https://mastodon.social/api/v1',
+            mastodonInstance: 'mastodon.social',
             lazyAvatarUrl: 'https://mastodon.social/avatars/original/missing.png',
             pollingFrequency: 20000,
             toastTimeout: 4000,
             requestLimit: 50,
+            queryFediverse: false,
         },
     },
 
@@ -47,6 +48,9 @@ export const store = {
     // TODO: View toots in context; https://mastodon.example/api/v1/statuses/:id/context ("ancestors", "descendants")
     // TODO: Streaming? https://docs.joinmastodon.org/methods/timelines/streaming/
 
+    // This seems dumb...
+    BASE_URL() { return `https://${this.state.settings.mastodonInstance}/api/v1` },
+
     async getTagTimeline(tag, limit=this.state.settings.requestLimit) {
         if (this.state.appState.feedView == 'public') {
             this.cacheToots();
@@ -54,7 +58,7 @@ export const store = {
         this.state.appState.loading = true;
         this.state.userState.currentTag = tag;
         this.state.appState.feedView = 'tag';
-        const response = await fetch(`${this.state.settings.BASE_URL}/timelines/tag/${tag}?limit=${limit}`, {
+        const response = await fetch(`${this.BASE_URL()}/timelines/tag/${tag}?limit=${limit}`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -66,7 +70,7 @@ export const store = {
     async updateTagTimeline(limit=this.state.settings.requestLimit) {
         this.state.appState.loading = true;
         let last_id = this.state.appState.currentToots[0].id;
-        const response = await fetch(`${this.state.settings.BASE_URL}/timelines/tag/${this.state.userState.currentTag}?since_id=${last_id}&limit=${limit}`, {
+        const response = await fetch(`${this.BASE_URL()}/timelines/tag/${this.state.userState.currentTag}?since_id=${last_id}&limit=${limit}`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -76,6 +80,8 @@ export const store = {
     },
 
     async getPublicTimeline(limit=this.state.settings.requestLimit) {
+        console.log(this.BASE_URL());
+        console.log(this.state.settings.mastodonInstance);
         const cachedToots = await this.getCachedToots();
         if (cachedToots.length) {
             // We have cached toots, use them instead of requesting new ones
@@ -89,21 +95,25 @@ export const store = {
             this.state.appState.feedView = 'public';
             this.state.userState.currentTag = '';
             this.state.userState.selectedTrend = '';
-            const response = await fetch(`${this.state.settings.BASE_URL}/timelines/public?limit=${limit}`, {
+            const response = await fetch(`${this.BASE_URL()}/timelines/public?limit=${limit}&local=${!this.state.settings.queryFediverse}`, {
                 method: 'GET',
             });
-            const json_response = await response.json();
-            this.state.appState.currentToots = json_response;
-            this.postProcessToot();
+            if (response.ok) {
+                const json_response = await response.json();
+                this.state.appState.currentToots = json_response;
+                this.postProcessToot();
+                this.firstAndLast();
+            } else {
+                this.state.appState.currentToots = [];
+            }
             this.state.appState.loading = false;
-            this.firstAndLast();
         }
     },
     
     async updatePublicTimeline(limit=this.state.settings.requestLimit) {
         this.state.appState.loading = true;
         let last_id = this.state.appState.currentToots[0].id;
-        const response = await fetch(`${this.state.settings.BASE_URL}/timelines/public?since_id=${last_id}&limit=${limit}`, {
+        const response = await fetch(`${this.BASE_URL()}/timelines/public?since_id=${last_id}&limit=${limit}`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -121,7 +131,7 @@ export const store = {
         this.state.userState.currentTag = '';
         this.state.userState.selectedTrend = '';
         // Get the account's toots
-        const response = await fetch(`${this.state.settings.BASE_URL}/accounts/${account_id}/statuses?limit=${limit}`, {
+        const response = await fetch(`${this.BASE_URL()}/accounts/${account_id}/statuses?limit=${limit}`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -137,7 +147,7 @@ export const store = {
         let last_id = this.state.appState.currentToots[0].id;
         let account_id = this.state.userState.currentAccount.id;
         // Get the account's toots
-        const response = await fetch(`${this.state.settings.BASE_URL}/accounts/${account_id}/statuses?limit=${limit}&since_id=${last_id}`, {
+        const response = await fetch(`${this.BASE_URL()}/accounts/${account_id}/statuses?limit=${limit}&since_id=${last_id}`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -147,7 +157,7 @@ export const store = {
     },
 
     async getTrends() {
-        const response = await fetch(`${this.state.settings.BASE_URL}/trends`, {
+        const response = await fetch(`${this.BASE_URL()}/trends`, {
             method: 'GET',
         });
         const json_response = await response.json();
@@ -160,7 +170,7 @@ export const store = {
             
             // If toot has a reply, fetch it and add it
             if (toot.in_reply_to_id) {
-                const response = await fetch(`${this.state.settings.BASE_URL}/statuses/${toot.in_reply_to_id}`, {
+                const response = await fetch(`${this.BASE_URL()}/statuses/${toot.in_reply_to_id}`, {
                     method: 'GET',
                 });
                 const json_response = await response.json();
@@ -241,6 +251,17 @@ export const store = {
         const userState = await get('userState');
         if (userState != null) {
             this.state.userState = userState;
+        }
+    },
+
+    setSettings() {
+        set('settings', this.state.settings);
+    },
+
+    async loadSettings() {
+        const settings = await get('settings');
+        if (settings != null) {
+            this.state.settings = settings;
         }
     },
 
